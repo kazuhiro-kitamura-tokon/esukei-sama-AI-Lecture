@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code & Cowork セットアップ研修</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #FAFAF9;
+    --surface: #FFFFFF;
+    --surface-alt: #F5F5F4;
+    --border: #E7E5E4;
+    --text: #1C1917;
+    --text-secondary: #57534E;
+    --text-tertiary: #A8A29E;
+    --accent: #2563EB;
+    --accent-light: #EFF6FF;
+    --accent-dark: #1D4ED8;
+    --green: #059669;
+    --green-light: #ECFDF5;
+    --orange: #D97706;
+    --orange-light: #FFFBEB;
+    --red: #DC2626;
+    --red-light: #FEF2F2;
+    --purple: #7C3AED;
+    --purple-light: #F5F3FF;
+    --code-bg: #1E293B;
+    --code-text: #E2E8F0;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans JP', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    background: linear-gradient(135deg, #0F172A 0%, #1E3A5F 100%);
+    color: #fff;
+    padding: 80px 40px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: -50%; right: -20%;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-inner { max-width: 800px; margin: 0 auto; position: relative; z-index: 1; }
+  .hero-label {
+    display: inline-block;
+    font-size: 11px; font-weight: 600; letter-spacing: 2px;
+    text-transform: uppercase; color: rgba(255,255,255,0.5);
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: clamp(28px, 5vw, 42px); font-weight: 700;
+    line-height: 1.25; letter-spacing: -0.5px; margin-bottom: 16px;
+  }
+  .hero h1 span { color: #60A5FA; }
+  .hero p { font-size: 16px; color: rgba(255,255,255,0.7); max-width: 560px; line-height: 1.8; }
+  .hero-meta { margin-top: 32px; display: flex; gap: 32px; flex-wrap: wrap; }
+  .hero-meta-item {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; color: rgba(255,255,255,0.6);
+  }
+  .hero-meta-item svg { opacity: 0.5; }
+
+  /* ── Main ── */
+  .main { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+
+  /* ── Agenda ── */
+  .agenda {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 32px;
+    margin: -30px auto 48px; position: relative; z-index: 2;
+    max-width: 800px; box-shadow: var(--shadow-md);
+  }
+  .agenda h2 {
+    font-size: 14px; font-weight: 600; color: var(--text-secondary);
+    letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px;
+  }
+  .agenda-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 600px) { .agenda-grid { grid-template-columns: 1fr; } }
+  .agenda-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 14px 16px; border-radius: var(--radius-sm); background: var(--surface-alt);
+  }
+  .agenda-num {
+    flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
+    background: var(--accent); color: #fff; font-size: 13px; font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .agenda-text { font-size: 14px; }
+  .agenda-text strong { display: block; font-weight: 600; margin-bottom: 2px; }
+  .agenda-text small { color: var(--text-tertiary); font-size: 12px; }
+
+  /* ── Section ── */
+  .section { margin-bottom: 56px; }
+  .section-header {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 24px; padding-bottom: 16px; border-bottom: 2px solid var(--border);
+  }
+  .section-num {
+    flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 700; color: #fff;
+  }
+  .section-num.blue { background: var(--accent); }
+  .section-num.green { background: var(--green); }
+  .section-num.purple { background: var(--purple); }
+  .section-num.orange { background: var(--orange); }
+  .section-title { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; }
+  .section-title small {
+    display: block; font-size: 13px; font-weight: 500;
+    color: var(--text-tertiary); margin-top: 2px;
+  }
+
+  /* ── Step card ── */
+  .step {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 24px 28px;
+    margin-bottom: 16px; box-shadow: var(--shadow);
+  }
+  .step h3 {
+    font-size: 16px; font-weight: 600; margin-bottom: 12px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .step p { color: var(--text-secondary); margin-bottom: 12px; }
+  .step p:last-child { margin-bottom: 0; }
+
+  /* ── Code ── */
+  .code-block {
+    background: var(--code-bg); color: var(--code-text);
+    border-radius: var(--radius-sm); padding: 16px 20px;
+    font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    line-height: 1.6; overflow-x: auto; margin: 12px 0; position: relative;
+  }
+  .code-block .comment { color: #64748B; }
+  .code-block .cmd { color: #7DD3FC; }
+  .code-label {
+    position: absolute; top: 8px; right: 12px;
+    font-size: 10px; font-weight: 600; color: #64748B;
+    letter-spacing: 0.5px; font-family: 'Inter', sans-serif;
+  }
+  code {
+    font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    background: var(--surface-alt); padding: 2px 6px;
+    border-radius: 4px; border: 1px solid var(--border);
+  }
+
+  /* ── Callout ── */
+  .callout {
+    border-radius: var(--radius-sm); padding: 16px 20px;
+    margin: 16px 0; font-size: 14px;
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  .callout-icon { flex-shrink: 0; font-size: 18px; margin-top: 1px; }
+  .callout-info { background: var(--accent-light); border-left: 3px solid var(--accent); }
+  .callout-warn { background: var(--orange-light); border-left: 3px solid var(--orange); }
+  .callout-success { background: var(--green-light); border-left: 3px solid var(--green); }
+  .callout-danger { background: var(--red-light); border-left: 3px solid var(--red); }
+  .callout p { color: var(--text); margin: 0; }
+
+  /* ── Prompt box (main star) ── */
+  .prompt-box {
+    background: var(--code-bg);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    margin: 16px 0;
+    position: relative;
+  }
+  .prompt-box-label {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 600; letter-spacing: 1px;
+    text-transform: uppercase; color: #60A5FA; margin-bottom: 14px;
+  }
+  .prompt-box-text {
+    color: #E2E8F0; font-size: 14px; line-height: 1.8;
+    white-space: pre-wrap; font-family: 'Noto Sans JP', sans-serif;
+  }
+  .prompt-box-copy {
+    position: absolute; top: 16px; right: 16px;
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
+    color: #94A3B8; border-radius: 6px; padding: 6px 12px;
+    font-size: 11px; font-weight: 500; cursor: pointer;
+    font-family: 'Inter', sans-serif; transition: all 0.15s;
+  }
+  .prompt-box-copy:hover { background: rgba(255,255,255,0.2); color: #E2E8F0; }
+
+  /* ── Accordion (detail steps) ── */
+  .accordion {
+    border: 1px solid var(--border); border-radius: var(--radius-sm);
+    margin: 16px 0; overflow: hidden;
+  }
+  .accordion summary {
+    padding: 14px 20px; cursor: pointer; font-size: 14px; font-weight: 500;
+    background: var(--surface-alt); color: var(--text-secondary);
+    display: flex; align-items: center; gap: 8px;
+    list-style: none; user-select: none;
+  }
+  .accordion summary::-webkit-details-marker { display: none; }
+  .accordion summary::before {
+    content: '▶'; font-size: 10px; color: var(--text-tertiary);
+    transition: transform 0.2s;
+  }
+  .accordion[open] summary::before { transform: rotate(90deg); }
+  .accordion summary:hover { background: var(--border); }
+  .accordion .accordion-body {
+    padding: 20px; border-top: 1px solid var(--border);
+    background: var(--surface); font-size: 14px;
+  }
+  .accordion .accordion-body p { color: var(--text-secondary); margin-bottom: 10px; }
+  .accordion .accordion-body p:last-child { margin-bottom: 0; }
+
+  /* ── Numbered list ── */
+  .numbered { counter-reset: item; list-style: none; margin: 12px 0; }
+  .numbered li {
+    counter-increment: item; padding: 6px 0 6px 36px;
+    position: relative; font-size: 14px; color: var(--text-secondary);
+  }
+  .numbered li::before {
+    content: counter(item); position: absolute; left: 0; top: 6px;
+    width: 24px; height: 24px; background: var(--accent-light);
+    color: var(--accent); font-size: 12px; font-weight: 600;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  }
+
+  /* ── Practice card ── */
+  .practice {
+    background: linear-gradient(135deg, var(--purple-light) 0%, #EDE9FE 100%);
+    border: 1px solid #DDD6FE; border-radius: var(--radius);
+    padding: 28px; margin: 20px 0;
+  }
+  .practice h4 {
+    font-size: 15px; font-weight: 600; color: var(--purple);
+    margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+  }
+  .practice p { color: var(--text-secondary); font-size: 14px; }
+
+  /* ── Flow diagram ── */
+  .flow {
+    display: flex; align-items: center; justify-content: center;
+    gap: 0; margin: 24px 0; flex-wrap: wrap;
+  }
+  .flow-node {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 10px 18px;
+    font-size: 13px; font-weight: 500; text-align: center; white-space: nowrap;
+  }
+  .flow-node.highlight { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .flow-arrow { color: var(--text-tertiary); font-size: 18px; margin: 0 6px; flex-shrink: 0; }
+
+  /* ── Table ── */
+  .comparison-table {
+    width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px;
+  }
+  .comparison-table th {
+    background: var(--surface-alt); padding: 10px 14px; text-align: left;
+    font-weight: 600; font-size: 13px; border-bottom: 2px solid var(--border);
+  }
+  .comparison-table td {
+    padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--text-secondary);
+  }
+  .comparison-table tr:last-child td { border-bottom: none; }
+
+  /* ── Task list (checkbox style) ── */
+  .task-list { list-style: none; margin: 12px 0; }
+  .task-list li {
+    padding: 8px 0 8px 28px; position: relative;
+    color: var(--text-secondary); font-size: 14px;
+  }
+  .task-list li::before {
+    content: ''; position: absolute; left: 0; top: 12px;
+    width: 16px; height: 16px; border: 2px solid var(--border); border-radius: 4px;
+  }
+
+  /* ── UI mockup ── */
+  .ui-mock {
+    background: #2A2A2C; border-radius: var(--radius); padding: 20px;
+    margin: 16px 0; font-family: -apple-system, sans-serif; overflow: hidden;
+  }
+  .ui-mock-input {
+    background: #3A3A3C; border-radius: 12px; padding: 16px 20px;
+    color: #8E8E93; font-size: 15px; margin-bottom: 12px;
+  }
+  .ui-mock-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 8px;
+  }
+  .ui-mock-bar-left { display: flex; align-items: center; gap: 4px; }
+  .ui-mock-toggle {
+    display: flex; background: #3A3A3C; border-radius: 8px; padding: 3px; gap: 2px;
+  }
+  .ui-mock-toggle-item {
+    padding: 5px 14px; border-radius: 6px; font-size: 13px;
+    color: #8E8E93; font-weight: 500;
+  }
+  .ui-mock-toggle-item.active {
+    background: #5A5A5C; color: #FFFFFF;
+  }
+  .ui-mock-plus {
+    width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+    color: #8E8E93; font-size: 18px;
+  }
+  .ui-mock-bar-right { display: flex; align-items: center; gap: 12px; }
+  .ui-mock-model { color: #8E8E93; font-size: 13px; font-weight: 500; }
+  .ui-mock-bottom {
+    display: flex; align-items: center; gap: 8px;
+    margin-top: 10px; flex-wrap: wrap;
+  }
+  .ui-mock-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: #3A3A3C; border-radius: 8px; padding: 6px 14px;
+    color: #CCCCCC; font-size: 12px; font-weight: 500;
+  }
+  .ui-mock-chip-icon { font-size: 14px; }
+  .ui-mock-boost {
+    margin-left: auto; color: #8E8E93; font-size: 12px;
+    display: flex; align-items: center; gap: 4px;
+  }
+
+  /* ── Divider ── */
+  .divider { height: 1px; background: var(--border); margin: 32px 0; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ── Footer ── */
+  .footer {
+    margin-top: 64px; padding: 32px 0; border-top: 1px solid var(--border);
+    text-align: center; font-size: 12px; color: var(--text-tertiary);
+  }
+
+  /* ── Highlight label ── */
+  .label {
+    display: inline-block; font-size: 11px; font-weight: 600;
+    padding: 2px 8px; border-radius: 4px; letter-spacing: 0.5px;
+  }
+  .label-new { background: #DBEAFE; color: #1D4ED8; }
+  .label-key { background: #FEF3C7; color: #92400E; }
+  .label-tip { background: #D1FAE5; color: #065F46; }
+
+  @media print { .hero { padding: 40px; } .step, .agenda { break-inside: avoid; } }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ HERO ═══════════ -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-label">AI Training Session — Day 1</div>
+    <h1><span>Claude Code</span> & <span>Cowork</span><br>セットアップ研修</h1>
+    <p>Claudeをインストールして、実際の業務を自動化する第一歩。<br>今日のゴールは「AIに仕事をお願いできる環境」を整えることです。</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M8 4v4l3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        所要時間：約60分
+      </div>
+      <div class="hero-meta-item">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="10" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 1v4M11 1v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        前提：Claude Proプラン加入済み
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ AGENDA ═══════════ -->
+<div class="agenda">
+  <h2>本日のアジェンダ</h2>
+  <div class="agenda-grid">
+    <div class="agenda-item">
+      <div class="agenda-num">1</div>
+      <div class="agenda-text">
+        <strong>全体像を知る</strong>
+        <small>5分 — Code・Coworkって何？</small>
+      </div>
+    </div>
+    <div class="agenda-item">
+      <div class="agenda-num">2</div>
+      <div class="agenda-text">
+        <strong>Claude Codeをインストール</strong>
+        <small>20分 — Claudeと会話しながらセットアップ</small>
+      </div>
+    </div>
+    <div class="agenda-item">
+      <div class="agenda-num">3</div>
+      <div class="agenda-text">
+        <strong>Coworkの画面を覚える</strong>
+        <small>15分 — 切替・フォルダー・マニュアル・スキル</small>
+      </div>
+    </div>
+    <div class="agenda-item">
+      <div class="agenda-num">4</div>
+      <div class="agenda-text">
+        <strong>実践タスクに挑戦</strong>
+        <small>20分 — 実際の業務で体験する</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ═══════════ SECTION 1 ═══════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num blue">1</div>
+    <div class="section-title">
+      全体像を知る
+      <small>5分 — まず「何ができるか」を把握する</small>
+    </div>
+  </div>
+
+  <div class="step">
+    <h3>Claudeの3つの使い方</h3>
+    <table class="comparison-table">
+      <thead>
+        <tr><th>機能</th><th>何ができる？</th><th>イメージ</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>チャット</strong></td>
+          <td>ブラウザやアプリで質問・相談・文章作成</td>
+          <td>賢い相談相手</td>
+        </tr>
+        <tr>
+          <td><strong>Claude Code</strong></td>
+          <td>ターミナルからプログラムを書かせる・実行する</td>
+          <td>プログラマーを雇う</td>
+        </tr>
+        <tr>
+          <td><strong>Cowork</strong></td>
+          <td>PCの画面を見てマウス・キーボードを直接操作</td>
+          <td>隣の席の同僚に頼む</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout callout-info">
+      <div class="callout-icon">💡</div>
+      <div><p><strong>今日のポイント：</strong>Code も Cowork も、使い方はシンプルです。<strong>「やりたいことを日本語で伝える」</strong>だけ。プログラミングの知識は必要ありません。</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ SECTION 2 ═══════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num green">2</div>
+    <div class="section-title">
+      Claude Code をインストール
+      <small>20分 — Claudeに教えてもらいながらセットアップ</small>
+    </div>
+  </div>
+
+  <div class="step">
+    <h3>Step 2-1：Claude Desktop をインストール</h3>
+    <p>まず、PCにClaude Desktopアプリを入れます。</p>
+    <ol class="numbered">
+      <li><a href="https://claude.ai/download" target="_blank">claude.ai/download</a> にアクセス</li>
+      <li>お使いのOS（Mac / Windows）用のインストーラーをダウンロード</li>
+      <li>ダウンロードしたファイルを実行してインストール</li>
+      <li>アプリを起動し、Claudeアカウント（Proプラン）でログイン</li>
+    </ol>
+
+    <div class="callout callout-info">
+      <div class="callout-icon">💡</div>
+      <div><p>ブラウザの claude.ai と同じアカウントでログインしてください。Proプランの機能がそのまま使えます。</p></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <h3>Step 2-2：Claudeに「Claude Codeのインストール方法」を聞く <span class="label label-key">体験学習</span></h3>
+
+    <p>ここが今日の大事な体験ポイントです。手順書を読む代わりに、<strong>Claude自身にインストールの手順を教えてもらいます</strong>。実はこれが、Claudeと一緒に仕事をする一番の練習になります。</p>
+
+    <p>Claude Desktopアプリのチャット画面で、以下のプロンプトをコピーして送信してください。</p>
+
+    <div class="prompt-box">
+      <div class="prompt-box-label">📋 コピーして送信</div>
+      <button class="prompt-box-copy" onclick="copyPrompt(this)">コピー</button>
+      <div class="prompt-box-text" id="prompt-install">Claude Codeをこのパソコンにインストールしたいです。
+
+私のPCの環境：
+・OS：（ここにMac or Windowsを記入）
+・プログラミング経験：ほぼなし
+・Node.jsがインストールされているか分かりません
+
+以下の手順でお願いします：
+1. まず今の環境を確認する方法を教えてください
+2. 必要なものがあればインストール方法を教えてください
+3. Claude Codeのインストールコマンドを教えてください
+4. インストールが成功したか確認する方法を教えてください
+
+各ステップで私が実行した結果を伝えるので、問題があれば一緒に解決してください。</div>
+    </div>
+
+    <div class="callout callout-success">
+      <div class="callout-icon">✅</div>
+      <div><p><strong>なぜこの方法？</strong> — PCの環境は人それぞれ違います。Claudeに聞きながら進めれば、あなたのPCに合った手順を教えてくれます。途中で問題が起きても、エラーメッセージをそのまま貼れば解決方法を教えてくれます。</p></div>
+    </div>
+
+    <details class="accordion">
+      <summary>📖 手順リファレンス（困ったときに開いてください）</summary>
+      <div class="accordion-body">
+        <p><strong>ネイティブインストール（おすすめ）</strong></p>
+        <p>Mac / Linux の場合：</p>
+        <div class="code-block">
+          <span class="cmd">curl -fsSL claude.ai/install.sh | bash</span>
+        </div>
+        <p>Windows（PowerShell）の場合：</p>
+        <div class="code-block">
+          <span class="cmd">irm https://claude.ai/install.ps1 | iex</span>
+        </div>
+        <p><strong>npm経由の場合（Node.js 18以降が必要）：</strong></p>
+        <div class="code-block">
+          <span class="cmd">npm install -g @anthropic-ai/claude-code</span>
+        </div>
+        <p style="margin-top:12px"><strong>よくある問題と対処：</strong></p>
+        <table class="comparison-table">
+          <tbody>
+            <tr><td>「permission denied」と出る</td><td><code>sudo</code> は使わない。Claudeに状況を伝えて解決方法を聞く</td></tr>
+            <tr><td>「Node.js not found」</td><td>Node.js 18以降をインストールする必要あり。Claudeに聞けば手順を教えてくれる</td></tr>
+            <tr><td>「command not found: claude」</td><td>ターミナルを一度閉じて開き直す。またはPATHの設定が必要</td></tr>
+            <tr><td>ログイン画面で止まる</td><td><code>/login</code> と入力 → ブラウザでログイン → 「Claude App (Pro plan)」を選択</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+  </div>
+
+  <div class="step">
+    <h3>Step 2-3：Claude Code が動いたら確認 <span class="label label-tip">ゴール</span></h3>
+    <p>ターミナルで <code>claude</code> と入力して、以下のように表示されたら成功です。</p>
+    <div class="code-block">
+      <span class="comment">✻ Welcome to Claude Code!</span><br><br>
+      <span class="cmd">&gt; </span><span class="comment">ここに指示を入力できる</span>
+    </div>
+    <p>試しに何か話しかけてみましょう。</p>
+    <div class="code-block">
+      <span class="cmd">&gt; こんにちは！日本語で返事してください</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ SECTION 3 ═══════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num purple">3</div>
+    <div class="section-title">
+      Coworkの画面を覚える
+      <small>15分 — 4つの大事な概念</small>
+    </div>
+  </div>
+
+  <div class="step">
+    <h3>3-1：チャット ↔ Cowork の切り替え <span class="label label-new">新UI</span></h3>
+    <p>Claude Desktopアプリの入力欄のすぐ上に、<strong>「チャット」と「Cowork」の切り替えトグル</strong>があります。</p>
+
+    <!-- UI Mock -->
+    <div class="ui-mock">
+      <div class="ui-mock-input">本日はどのようなお手伝いをさせていただけますか？</div>
+      <div class="ui-mock-bar">
+        <div class="ui-mock-bar-left">
+          <div class="ui-mock-plus">+</div>
+          <div class="ui-mock-toggle">
+            <div class="ui-mock-toggle-item">チャット</div>
+            <div class="ui-mock-toggle-item active">Cowork</div>
+          </div>
+        </div>
+        <div class="ui-mock-bar-right">
+          <div class="ui-mock-model">Opus 4.6 中 ∨</div>
+          <div style="color:#8E8E93; font-size:18px;">🎤</div>
+        </div>
+      </div>
+      <div class="ui-mock-bottom">
+        <div class="ui-mock-chip"><span class="ui-mock-chip-icon">📁</span>プロジェクトまたはフォルダー ∨</div>
+        <div class="ui-mock-chip"><span class="ui-mock-chip-icon">🤚</span>マニュアル ∨</div>
+        <div class="ui-mock-boost">⚡ 8月5日まで使用量が2倍</div>
+      </div>
+    </div>
+
+    <table class="comparison-table">
+      <thead><tr><th>モード</th><th>できること</th><th>使い分け</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>チャット</strong></td>
+          <td>テキストでの会話・文章作成・相談</td>
+          <td>質問する、文面を考えてもらう時</td>
+        </tr>
+        <tr>
+          <td><strong>Cowork</strong></td>
+          <td>PC画面の操作、ファイル処理、ブラウザ操作</td>
+          <td>実際に「作業」をしてもらう時</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="step">
+    <h3>3-2：「プロジェクトまたはフォルダー」 <span class="label label-key">重要</span></h3>
+    <p>Coworkに作業を頼むとき、<strong>「どこのファイルを使うか」を指定する</strong>のがこの設定です。</p>
+
+    <div class="callout callout-info">
+      <div class="callout-icon">📁</div>
+      <div>
+        <p><strong>フォルダーを指定する ＝ Claudeの作業場所を決める</strong></p>
+        <p>たとえば「デスクトップの日報フォルダ」を指定すると、Claudeはそのフォルダ内のファイルを見たり編集したりできるようになります。逆に言えば、指定していないフォルダのファイルには勝手にアクセスしません。</p>
+      </div>
+    </div>
+
+    <p><strong>設定方法：</strong></p>
+    <ol class="numbered">
+      <li>入力欄の下にある「<strong>プロジェクトまたはフォルダー</strong>」をクリック</li>
+      <li>作業に使いたいフォルダを選択</li>
+      <li>Claudeがそのフォルダの中身を見られるようになる</li>
+    </ol>
+
+    <div class="practice">
+      <h4>🧪 試してみよう</h4>
+      <p>デスクトップに「Claude練習」というフォルダを作って、適当なファイル（テキストやExcel）を入れてみてください。そのフォルダを指定して、Coworkに「このフォルダの中身を教えてください」とお願いしてみましょう。</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <h3>3-3：「マニュアル」で指示を自動化する <span class="label label-key">重要</span></h3>
+    <p>毎回同じ指示を書くのは面倒ですよね。<strong>「マニュアル」を設定しておくと、Claudeが毎回自動でその指示に従って動きます。</strong></p>
+
+    <div class="callout callout-success">
+      <div class="callout-icon">🤚</div>
+      <div>
+        <p><strong>マニュアル ＝ Claudeへの「いつものルール」</strong></p>
+        <p>例えば「ファイル名には必ず日付を入れてください」「日本語で回答してください」「確認してから実行してください」などを書いておくと、いちいち指示しなくてもClaudeが守ってくれます。</p>
+      </div>
+    </div>
+
+    <p><strong>設定方法：</strong></p>
+    <ol class="numbered">
+      <li>入力欄の下にある「<strong>🤚 マニュアル</strong>」をクリック</li>
+      <li>Claudeに守ってほしいルールや注意点を書く</li>
+      <li>保存すると、以降の会話で自動的に適用される</li>
+    </ol>
+
+    <div class="prompt-box">
+      <div class="prompt-box-label">📋 マニュアルの記入例</div>
+      <button class="prompt-box-copy" onclick="copyPrompt(this)">コピー</button>
+      <div class="prompt-box-text" id="prompt-manual">## 基本ルール
+- 日本語で回答してください
+- ファイルを変更する前に必ず確認を取ってください
+- 作業結果は分かりやすく要約してください
+
+## ファイル操作
+- 新しく作るファイル名には日付（YYYY-MM-DD）を先頭に付けてください
+- 元のファイルは削除せず、コピーを作って編集してください</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <h3>3-4：「スキル」で作業手順を覚えさせる <span class="label label-new">発展</span></h3>
+    <p>Coworkで一度やった作業は、<strong>「スキル」として保存</strong>できます。保存しておくと、次回から同じ作業を一言で呼び出せます。</p>
+
+    <div class="flow">
+      <div class="flow-node">初回：手順を<br>教えながら実行</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node highlight">スキルとして<br>保存</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">次回から<br>一言で実行</div>
+    </div>
+
+    <p><strong>スキルの作り方：</strong></p>
+    <ol class="numbered">
+      <li>まずCoworkで作業を一通り実行する（例：日報チェック）</li>
+      <li>うまくいったら「今の作業をスキルとして保存してください」とお願いする</li>
+      <li>スキル名と説明を確認して保存</li>
+      <li>次回から「（スキル名）を実行して」で同じ作業ができる</li>
+    </ol>
+
+    <div class="callout callout-info">
+      <div class="callout-icon">💡</div>
+      <div><p><strong>日報チェックも最終的にはスキル化がゴールです。</strong>今日はまず手動で一度やってみて、うまくいったらスキルに登録する、という流れで進めましょう。</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ SECTION 4 ═══════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num orange">4</div>
+    <div class="section-title">
+      実践タスクに挑戦
+      <small>20分 — 自分の業務でClaudeを使ってみる</small>
+    </div>
+  </div>
+
+  <div class="step">
+    <h3>実践A：Claude Codeで日報チェックの自動化を始める</h3>
+    <p>Claude Codeのターミナルで、以下のプロンプトを送ってみてください。まずは「仕組みを一緒に考える」ところから始めます。</p>
+
+    <div class="prompt-box">
+      <div class="prompt-box-label">📋 コピーして送信（Claude Codeのターミナルに）</div>
+      <button class="prompt-box-copy" onclick="copyPrompt(this)">コピー</button>
+      <div class="prompt-box-text" id="prompt-code-task">Chatwork APIを使って、店舗の日報提出チェックを自動化するPythonスクリプトを一緒に作りたいです。
+
+【背景】
+飲食店を4店舗（升屋、海神、串神坊、肉もつ屋）運営しています。
+毎朝、各店舗がChatworkの「店舗日報」グループに数値日報を投稿するルールです。
+現在は目視で提出を確認し、未提出の店舗にはリマインドメッセージを手動で送っています。
+
+【自動化したいこと】
+1. Chatwork APIで「店舗日報」グループの投稿を取得する
+2. 4店舗それぞれの提出有無を判定する
+3. 未提出の店舗にリマインドメッセージを自動送信する
+
+まずは全体像を説明してから、ステップバイステップで進めてください。
+各ステップで私の確認を取ってから次に進んでください。</div>
+    </div>
+
+    <div class="callout callout-warn">
+      <div class="callout-icon">⚠️</div>
+      <div><p><strong>Chatwork APIトークンについて：</strong>スクリプトの実行にはAPIトークンが必要です。今日はまず仕組みの設計とコードの作成まで進めて、APIトークンが発行されたら実際に動かしましょう。</p></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <h3>実践B：Coworkで身近なタスクを体験する</h3>
+    <p>Coworkモードに切り替えて、普段の業務で「手作業でやっている繰り返し作業」を1つ試してみましょう。</p>
+
+    <div class="practice">
+      <h4>🧪 おすすめの練習タスク</h4>
+      <div class="prompt-box" style="margin-top:12px">
+        <div class="prompt-box-label">例① リマインドテンプレート生成</div>
+        <div class="prompt-box-text" style="font-size:13px">今日の日付で、以下4店舗分の日報リマインドメッセージを作ってください。
+
+店舗：升屋、海神、串神坊、肉もつ屋
+
+テンプレート：
+[info][title]【◯月◯日（◯）の数値日報について】[/title]
+現時点で「【報告】店舗日報 チャット」にて上記報告の確認が出来ていません。
+ご確認いただき、上記チャットへご対応をお願いいたします。[/info]
+
+上記を各店舗分、今日の日付を入れて作成し、テキストファイルに保存してください。</div>
+      </div>
+    </div>
+
+    <div class="practice">
+      <h4>🧪 発展：自分の業務から選んで試す</h4>
+      <p>以下のような作業をCoworkに頼んでみましょう。うまくいったら、次のセッションで<strong>スキル化</strong>にチャレンジします。</p>
+      <div class="prompt-box" style="margin-top:12px">
+        <div class="prompt-box-label">こんなことが頼めます</div>
+        <div class="prompt-box-text" style="font-size:13px">「このExcelファイルの空欄セルを見つけて、未入力箇所の一覧を作ってください」
+
+「このフォルダのファイルを、日付順に名前を変えて整理してください」
+
+「この会議メモを読んで、やるべきことリストを作ってください」</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <h3>実践C：2つの場所を行き来して照合する <span class="label label-key">Coworkの真骨頂</span></h3>
+    <p>普段の業務で一番手間がかかるのは、<strong>「あっちの画面の数字」と「こっちの画面の数字」を見比べて、合っているか確認する</strong>作業ではないでしょうか？</p>
+
+    <p>Coworkはこれが得意です。ブラウザで開いたページとExcel、あるいは2つの異なるサイトを行き来しながら、数字の照合→不一致の報告→訂正まで一気にやってくれます。</p>
+
+    <div class="flow">
+      <div class="flow-node">場所A<br><small>（ブラウザ/サイト）</small></div>
+      <div class="flow-arrow">←→</div>
+      <div class="flow-node highlight">Claude が<br>両方を見比べる</div>
+      <div class="flow-arrow">←→</div>
+      <div class="flow-node">場所B<br><small>（Excel/別サイト）</small></div>
+    </div>
+
+    <div class="callout callout-success">
+      <div class="callout-icon">✅</div>
+      <div>
+        <p><strong>これまで人間がやるしかなかった理由：</strong>2つのアプリをまたぐ作業は、従来のAIツールにはできませんでした。Coworkは実際にPCの画面を見て操作するので、「ブラウザを見て → Excelに戻って → 値を確認して → 違ったら直す」という人間と同じ動きができます。</p>
+      </div>
+    </div>
+
+    <div class="practice">
+      <h4>🧪 体験タスク：ブラウザの数値とExcelの照合</h4>
+      <p>実際の業務に近い形で試してみましょう。以下のプロンプトを参考に、自分の業務で使えそうな照合作業をCoworkに頼んでみてください。</p>
+      <div class="prompt-box" style="margin-top:12px">
+        <div class="prompt-box-label">📋 コピーして送信</div>
+        <button class="prompt-box-copy" onclick="copyPrompt(this)">コピー</button>
+        <div class="prompt-box-text" id="prompt-cross-check">以下の照合作業をお願いします。
+
+【場所A】ブラウザで開いている「本部管理」スプレッドシート
+  → ◯月◯日の各店舗の「現金売上（税込金額）」の欄
+
+【場所B】手元のExcel日報ファイル（フォルダーに設定済み）
+  → 同じ日付の各店舗の「現金売上」の列
+
+【やってほしいこと】
+1. 場所Aの各店舗の数値を確認してメモしてください
+2. 場所Bの該当するセルの数値と見比べてください
+3. 一致していない箇所があれば、どこがどう違うか報告してください
+4. 私が確認した上で、場所Bの数値を場所Aに合わせて訂正してください
+
+※訂正する前に必ず差異の一覧を見せてください。勝手に直さないでください。</div>
+      </div>
+    </div>
+
+    <p style="margin-top: 16px">この「照合パターン」は、いろいろな業務に応用できます。</p>
+
+    <table class="comparison-table">
+      <thead><tr><th>業務</th><th>場所A</th><th>場所B</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>銀行入金確認</strong></td>
+          <td>レジ〆チャットの現金売上額</td>
+          <td>ネットバンクの入出金明細</td>
+        </tr>
+        <tr>
+          <td><strong>Excel日報チェック</strong></td>
+          <td>Chatworkの数値日報の投稿</td>
+          <td>Dropbox内のExcel日報ファイル</td>
+        </tr>
+        <tr>
+          <td><strong>レジ〆確認</strong></td>
+          <td>清算レシートの報告チャット</td>
+          <td>PayPay管理画面の決済金額</td>
+        </tr>
+        <tr>
+          <td><strong>予約確認</strong></td>
+          <td>メールの予約通知</td>
+          <td>Resty予約台帳の登録内容</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout callout-info">
+      <div class="callout-icon">💡</div>
+      <div><p><strong>コツ：</strong>プロンプトに「訂正する前に必ず差異の一覧を見せてください」と書いておくと、Claudeが勝手に修正せず、確認を取ってから直してくれます。マニュアルに書いておくのもおすすめです。</p></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <h3>困ったときの対処法</h3>
+    <table class="comparison-table">
+      <thead><tr><th>困ったこと</th><th>対処法</th></tr></thead>
+      <tbody>
+        <tr><td>返事が途中で止まった</td><td>「続けてください」と入力</td></tr>
+        <tr><td>思った結果にならない</td><td>もっと具体的に指示し直す（「◯◯は△△にして」）</td></tr>
+        <tr><td>エラーが出た</td><td>エラーメッセージをそのままClaudeに貼る</td></tr>
+        <tr><td>Coworkの操作が変になった</td><td>マウスやキーボードに触らず、Claudeが完了するまで待つ</td></tr>
+        <tr><td>利用上限に達した</td><td>5時間で回復。今は<strong>8月5日まで使用量が2倍</strong>の期間中</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════ NEXT STEPS ═══════════ -->
+<div class="section">
+  <div class="divider"></div>
+  <div class="step" style="border-left: 3px solid var(--accent); background: var(--accent-light);">
+    <h3>📋 次回に向けて</h3>
+    <p>今日の研修で環境が整いました。次のステップに向けて準備をお願いします。</p>
+    <ul class="task-list">
+      <li>Chatwork APIトークンを発行する（管理者画面から取得可能）</li>
+      <li>「本部管理」スプレッドシートの構造を共有する</li>
+      <li>Excel日報のサンプルファイル（1日分）を用意する</li>
+      <li>今日作ったスクリプト（Claude Codeで作成したもの）を保存しておく</li>
+      <li>Coworkで試したタスクのうち、スキル化したいものをリストアップ</li>
+      <li><strong>ハーネスエンジニアリングの考え方を学ぶ</strong>（下の解説を読んでおく）</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══════════ HARNESS + CODE/COWORK 解説 ═══════════ -->
+<div class="section">
+  <div class="step" style="border: 2px solid var(--accent); border-radius: var(--radius);">
+    <h3>🧠 Code と Cowork — 根っこは同じもの</h3>
+
+    <p>今日、2つのツール（Claude Code と Cowork）を使いましたが、実はこの2つ、<strong>中身は同じClaudeが動いています</strong>。</p>
+
+    <p>違いは<strong>「操作の窓口」だけ</strong>です。</p>
+
+    <table class="comparison-table">
+      <thead><tr><th></th><th>Claude Code</th><th>Cowork</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>窓口</strong></td>
+          <td>ターミナル（黒い画面）</td>
+          <td>デスクトップアプリのGUI</td>
+        </tr>
+        <tr>
+          <td><strong>操作方法</strong></td>
+          <td>コマンドで指示を出す</td>
+          <td>チャットで指示を出す</td>
+        </tr>
+        <tr>
+          <td><strong>得意なこと</strong></td>
+          <td>スクリプト作成、ファイル処理、<br>コードを書いて「仕組み」を作る</td>
+          <td>画面操作、ブラウザ操作、<br>今すぐ「手作業」を代行する</td>
+        </tr>
+        <tr>
+          <td><strong>向いてる場面</strong></td>
+          <td>「毎日繰り返す作業」を<br>スクリプトにして自動化</td>
+          <td>「今この1回」の作業を<br>その場で代行してもらう</td>
+        </tr>
+        <tr>
+          <td><strong>中のAI</strong></td>
+          <td colspan="2" style="text-align:center"><strong>同じClaude</strong>（同じ頭脳が動いている）</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout callout-info">
+      <div class="callout-icon">💡</div>
+      <div>
+        <p><strong>使い分けのイメージ：</strong></p>
+        <p>日報チェックを「<strong>今日だけやってほしい</strong>」→ Coworkに頼む</p>
+        <p>日報チェックを「<strong>毎朝自動で実行する仕組みにしたい</strong>」→ Claude Codeでスクリプトを作る</p>
+        <p>どちらも同じClaudeが動いているので、Coworkで試してうまくいったやり方を、Claude Codeで「仕組み」に変換する、という流れが最も効率的です。</p>
+      </div>
+    </div>
+
+    <div class="flow">
+      <div class="flow-node">Coworkで<br>手作業を試す</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">うまくいった<br>手順を確認</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node highlight">Claude Codeで<br>仕組みに変換</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">毎日<br>自動で実行</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="step" style="border: 2px solid var(--green); border-radius: var(--radius);">
+    <h3>🏇 ハーネスエンジニアリング — AIへの「いつもの指示書」を書く技術</h3>
+
+    <p>馬（AI）にどれだけ能力があっても、手綱（ハーネス）がなければ意図通りに走れません。<strong>ハーネスエンジニアリング</strong>とは、AIに「こういう風に動いてね」と書いておく指示書を設計する技術のことです。</p>
+
+    <p>実はClaude CodeにもCoworkにも、それぞれ<strong>「毎回自動で読み込まれる指示ファイル」</strong>の仕組みがあります。</p>
+
+    <table class="comparison-table">
+      <thead><tr><th></th><th>Claude Code</th><th>Cowork</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>指示ファイル</strong></td>
+          <td><code>CLAUDE.md</code></td>
+          <td>マニュアル</td>
+        </tr>
+        <tr>
+          <td><strong>置き場所</strong></td>
+          <td>プロジェクトフォルダの直下に<br><code>CLAUDE.md</code> というファイルを作る</td>
+          <td>入力欄の下の<br>「🤚 マニュアル」に記入する</td>
+        </tr>
+        <tr>
+          <td><strong>いつ読まれる？</strong></td>
+          <td>Claude Code起動時に自動で読み込まれる</td>
+          <td>会話の開始時に自動で適用される</td>
+        </tr>
+        <tr>
+          <td><strong>何を書く？</strong></td>
+          <td>プロジェクト固有のルール・注意点・<br>ファイル構成の説明など</td>
+          <td>作業全般のルール・確認手順・<br>ファイル命名規則など</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>どちらも役割は同じです。<strong>「毎回口で言わなくても、AIが勝手に守ってくれるルールブック」</strong>を書いておく。これがハーネスエンジニアリングの基本です。</p>
+
+    <div class="prompt-box">
+      <div class="prompt-box-label">📋 CLAUDE.md の記入例（Claude Code用）</div>
+      <button class="prompt-box-copy" onclick="copyPrompt(this)">コピー</button>
+      <div class="prompt-box-text" id="prompt-claudemd"># エスケイ 日報チェックプロジェクト
+
+## 基本ルール
+- 日本語で回答すること
+- ファイルを変更する前に必ず確認を取ること
+- エラーが出たら原因と対処法をセットで説明すること
+
+## プロジェクト概要
+- 飲食4店舗（升屋、海神、串神坊、肉もつ屋）の日報提出チェック自動化
+- Chatwork APIを使用
+- 対象グループ：「【報告】店舗日報（数値日報と営業日報）」
+
+## ファイル構成
+- main.py：メインスクリプト
+- config.json：APIトークン・店舗リスト等の設定
+- templates/：リマインドメッセージのテンプレート</div>
+    </div>
+
+    <div class="callout callout-success">
+      <div class="callout-icon">🎯</div>
+      <div>
+        <p><strong>ポイント：</strong>CLAUDE.mdやマニュアルは<strong>「一度書いたら終わり」ではありません</strong>。使いながら「これも書いておけばよかった」と気づいたら、どんどん追記してください。AIと仕事をする中で、この指示書を育てていくこと自体がハーネスエンジニアリングです。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="step">
+    <h3>参考リンク</h3>
+    <table class="comparison-table">
+      <thead><tr><th>リソース</th><th>URL</th></tr></thead>
+      <tbody>
+        <tr><td>Claude Desktop ダウンロード</td><td><a href="https://claude.ai/download" target="_blank">claude.ai/download</a></td></tr>
+        <tr><td>Claude Code クイックスタート</td><td><a href="https://docs.anthropic.com/en/docs/claude-code/quickstart" target="_blank">docs.anthropic.com/claude-code/quickstart</a></td></tr>
+        <tr><td>Claude Code セットアップ詳細</td><td><a href="https://docs.anthropic.com/en/docs/claude-code/setup" target="_blank">docs.anthropic.com/claude-code/setup</a></td></tr>
+        <tr><td>Claude サポートセンター</td><td><a href="https://support.claude.com" target="_blank">support.claude.com</a></td></tr>
+        <tr><td>Chatwork API ドキュメント</td><td><a href="https://developer.chatwork.com/" target="_blank">developer.chatwork.com</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="footer">
+  <p>AI Training Session — Claude Code & Cowork セットアップ研修</p>
+</div>
+
+</div><!-- /main -->
+
+<script>
+function copyPrompt(btn) {
+  const box = btn.closest('.prompt-box');
+  const text = box.querySelector('.prompt-box-text').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'コピーしました！';
+    setTimeout(() => { btn.textContent = 'コピー'; }, 2000);
+  });
+}
+</script>
+</body>
+</html>
