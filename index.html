@@ -3,98 +3,46 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Claude Code & Cowork セットアップ研修</title>
+<title>Claude 研修テキスト — ポータル</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=M+PLUS+1+Code:wght@400;500&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&display=swap');
 
-  /* ── Theme: Lunar Gray (default) ── */
-  :root, [data-tone="ink"] {
+  :root {
     --bg: #FAFBFC; --bg-card: #FFFFFF; --bg-accent: #F1F2F6;
     --text-primary: #1A1C22; --text-secondary: #585B66; --text-tertiary: #8C8F9C;
     --border: #E0E2E8;
     --accent: #1A1C22; --accent-soft: #ECEDF2; --accent-mid: #363840;
-    --sec1: #1A1C22; --sec2: #363840; --sec3: #484B56; --sec4: #787B8A;
-    --code-bg: #10121A; --code-text: #F0F0F4; --code-cmd: #F0F0F4; --code-comment: #696C7A;
     --hero-from: #10121A; --hero-to: #363840; --hero-glow: rgba(180,190,220,0.04);
     --hero-highlight: #AEB1BE;
-    --prompt-label: #8C8F9C;
-    --tag-bg: #E6E8EE; --tag-text: #363840;
-    --practice-from: #EEF0F5; --practice-to: #E6E8EE; --practice-border: #D2D4DC;
     --font-jp: 'Zen Kaku Gothic New', 'Hiragino Kaku Gothic ProN', sans-serif;
     --font-en: 'Inter', sans-serif;
-    --font-mono: 'M PLUS 1 Code', 'Menlo', 'Osaka-Mono', monospace;
-    --fs-base: 15px;
-    --radius: 12px; --radius-sm: 8px;
+    --radius: 16px; --radius-sm: 10px;
     --shadow-sm: 0 1px 3px rgba(0,0,0,.04), 0 1px 2px rgba(0,0,0,.06);
-    --shadow-md: 0 4px 12px rgba(0,0,0,.06), 0 2px 4px rgba(0,0,0,.04);
+    --shadow-md: 0 4px 16px rgba(0,0,0,.08), 0 2px 4px rgba(0,0,0,.04);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,.1), 0 4px 8px rgba(0,0,0,.06);
   }
 
-  /* ── Theme: Blue ── */
-  [data-tone="blue"] {
-    --bg: #FAFAF9; --bg-card: #FFFFFF; --bg-accent: #EFF6FF;
-    --text-primary: #1C1917; --text-secondary: #57534E; --text-tertiary: #A8A29E;
-    --border: #E7E5E4;
-    --accent: #2563EB; --accent-soft: #EFF6FF; --accent-mid: #1D4ED8;
-    --sec1: #2563EB; --sec2: #059669; --sec3: #7C3AED; --sec4: #D97706;
-    --code-bg: #1E293B; --code-text: #E2E8F0; --code-cmd: #7DD3FC; --code-comment: #64748B;
-    --hero-from: #0F172A; --hero-to: #1E3A5F; --hero-glow: rgba(59,130,246,0.15);
-    --hero-highlight: #60A5FA;
-    --prompt-label: #60A5FA;
-    --tag-bg: #DBEAFE; --tag-text: #1D4ED8;
-    --practice-from: #F5F3FF; --practice-to: #EDE9FE; --practice-border: #DDD6FE;
-  }
-
-  /* ── Dark mode ── */
   [data-theme="dark"] {
     --bg: #10121A; --bg-card: #1A1C22; --bg-accent: #22242A;
     --text-primary: #E2E4EA; --text-secondary: #9A9CA6; --text-tertiary: #6A6C76;
-    --border: #2E3038; --accent-soft: #252730;
-    --shadow-sm: 0 1px 3px rgba(0,0,0,.3); --shadow-md: 0 4px 12px rgba(0,0,0,.4);
+    --border: #2E3038; --accent: #C6C8D4; --accent-soft: #252730; --accent-mid: #9A9CA6;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,.3); --shadow-md: 0 4px 16px rgba(0,0,0,.4);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,.5);
   }
-  [data-theme="dark"][data-tone="ink"] {
-    --accent: #C6C8D4; --accent-mid: #9A9CA6;
-    --sec1: #C6C8D4; --sec2: #A0A2AE; --sec3: #8A8C9A; --sec4: #AEB0BE;
-    --hero-highlight: #E2E4EA;
-    --tag-bg: #2A2C34; --tag-text: #AEB1BE;
-    --practice-from: #1E2028; --practice-to: #25272E; --practice-border: #2E3038;
-    --prompt-label: #8C8F9C;
-  }
-  [data-theme="dark"][data-tone="blue"] {
-    --accent: #60A5FA; --accent-mid: #93C5FD; --accent-soft: #1E293B;
-    --sec1: #60A5FA; --sec2: #34D399; --sec3: #A78BFA; --sec4: #FBBF24;
-    --hero-highlight: #93C5FD;
-    --tag-bg: #1E293B; --tag-text: #93C5FD;
-    --practice-from: #1E1B2E; --practice-to: #252338; --practice-border: #3B3665;
-    --prompt-label: #60A5FA;
-  }
-
-  [data-fs="1"] { zoom: 0.88; }
-  [data-fs="2"] { zoom: 0.94; }
-  /* default = no data-fs = zoom 1.0 */
-  [data-fs="4"] { zoom: 1.06; }
-  [data-fs="5"] { zoom: 1.12; }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
-    font-family: var(--font-jp); font-size: var(--fs-base); line-height: 1.85;
+    font-family: var(--font-jp); font-size: 15px; line-height: 1.85;
     color: var(--text-primary); background: var(--bg);
     -webkit-font-smoothing: antialiased; transition: background .3s, color .3s;
+    min-height: 100vh;
   }
-
-  /* ── SVG Icons ── */
-  .icon { width: 20px; height: 20px; display: inline-block; vertical-align: middle; flex-shrink: 0; }
-  .icon svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-  .icon-lg { width: 24px; height: 24px; }
-  .feature-icon-wrap {
-    flex-shrink: 0; width: 44px; height: 44px; border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    background: var(--accent-soft); color: var(--accent); transition: background .3s, color .3s;
-  }
-  .feature-icon-wrap .icon { width: 22px; height: 22px; }
 
   /* ── Controls ── */
-  .controls { position: fixed; top: 16px; right: 16px; z-index: 100; display: flex; gap: 8px; align-items: center; }
+  .ctrl {
+    position: fixed; top: 16px; right: 16px; z-index: 100;
+  }
   .ctrl-btn {
     width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--border);
     background: var(--bg-card); color: var(--text-secondary); cursor: pointer;
@@ -102,914 +50,157 @@
     box-shadow: var(--shadow-sm);
   }
   .ctrl-btn:hover { border-color: var(--accent); color: var(--accent); transform: scale(1.05); }
-  .ctrl-btn .icon { width: 18px; height: 18px; }
-  .tone-label {
-    font-family: var(--font-en); font-size: 10px; font-weight: 600;
-    letter-spacing: 1px; text-transform: uppercase; color: var(--text-tertiary);
-    padding: 6px 12px; border-radius: 100px; border: 1px solid var(--border);
-    background: var(--bg-card); cursor: pointer; transition: all .2s; box-shadow: var(--shadow-sm);
-    user-select: none;
-  }
-  .tone-label:hover { border-color: var(--accent); color: var(--accent); }
+  .ctrl-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
-  /* ── Layout ── */
-  .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
-
-  /* ── Fade-in ── */
-  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
-  .fade-up.visible { opacity: 1; transform: translateY(0); }
-
-  /* ── Cover ── */
-  .cover {
-    min-height: 70vh; display: flex; flex-direction: column;
+  /* ── Hero ── */
+  .hero {
+    min-height: 50vh; display: flex; flex-direction: column;
     justify-content: center; align-items: center; text-align: center;
-    padding: 80px 24px 60px; position: relative; overflow: hidden;
+    padding: 80px 24px 48px; position: relative; overflow: hidden;
     background: linear-gradient(135deg, var(--hero-from), var(--hero-to));
     color: #fff; transition: background .5s;
   }
-  .cover::before {
+  .hero::before {
     content: ''; position: absolute; top: -30%; right: -20%;
     width: 500px; height: 500px;
     background: radial-gradient(circle, var(--hero-glow) 0%, transparent 70%);
     border-radius: 50%; pointer-events: none;
   }
-  .cover-label {
+  .hero-label {
     font-family: var(--font-en); font-size: 11px; font-weight: 600;
-    letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.5);
-    margin-bottom: 24px; padding: 6px 16px; border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 100px; display: inline-block;
+    letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.4);
+    margin-bottom: 24px; padding: 6px 16px; border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 100px;
   }
-  .cover h1 {
-    font-size: clamp(26px, 4.5vw, 40px); font-weight: 700; line-height: 1.3;
-    letter-spacing: -0.5px; margin-bottom: 16px;
+  .hero h1 {
+    font-size: clamp(26px, 4.5vw, 38px); font-weight: 700; line-height: 1.3;
+    letter-spacing: -0.5px; margin-bottom: 12px;
   }
-  .cover h1 em { font-style: normal; color: var(--hero-highlight); transition: color .5s; }
-  .cover-sub { font-size: clamp(14px, 2vw, 16px); color: rgba(255,255,255,0.7); margin-bottom: 40px; max-width: 560px; line-height: 1.8; }
-  .cover-meta { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; font-size: 13px; color: rgba(255,255,255,0.5); }
-  .cover-meta span { display: flex; align-items: center; gap: 6px; }
-
-  /* ── Agenda ── */
-  .agenda {
-    background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
-    padding: 32px; margin: -30px auto 48px; position: relative; z-index: 2;
-    max-width: 860px; box-shadow: var(--shadow-md); transition: background .3s, border-color .3s;
-  }
-  .agenda h2 {
-    font-family: var(--font-en); font-size: 11px; font-weight: 600;
-    letter-spacing: 2px; text-transform: uppercase; color: var(--accent);
-    margin-bottom: 20px; transition: color .3s;
-  }
-  .agenda-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  @media (max-width: 600px) { .agenda-grid { grid-template-columns: 1fr; } }
-  .agenda-item {
-    display: flex; align-items: flex-start; gap: 12px;
-    padding: 14px 16px; border-radius: var(--radius-sm); background: var(--bg-accent);
-    transition: background .3s;
-  }
-  .agenda-num {
-    flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
-    background: var(--accent); color: #fff; font-family: var(--font-en);
-    font-size: 13px; font-weight: 600;
-    display: flex; align-items: center; justify-content: center; transition: background .3s;
-  }
-  .agenda-text { font-size: 14px; }
-  .agenda-text strong { display: block; font-weight: 600; margin-bottom: 2px; }
-  .agenda-text small { color: var(--text-tertiary); font-size: 12px; }
-
-  /* ── Sections ── */
-  section { padding: 48px 0; }
-  .section-label {
-    font-family: var(--font-en); font-size: 11px; font-weight: 600;
-    letter-spacing: 2.5px; text-transform: uppercase; color: var(--accent);
-    margin-bottom: 8px; transition: color .3s;
-  }
-  section h2 { font-size: clamp(20px, 3vw, 26px); font-weight: 700; line-height: 1.4; margin-bottom: 12px; letter-spacing: -0.3px; }
-  .section-lead { color: var(--text-secondary); margin-bottom: 36px; max-width: 640px; font-size: 14px; }
-
-  hr.divider { border: none; border-top: 1px solid var(--border); margin: 0; transition: border-color .3s; }
+  .hero h1 em { font-style: normal; color: var(--hero-highlight); }
+  .hero-sub { font-size: 15px; color: rgba(255,255,255,0.6); max-width: 480px; line-height: 1.8; }
 
   /* ── Cards ── */
-  .card {
-    background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
-    padding: 28px; box-shadow: var(--shadow-sm); transition: all .3s;
+  .container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+  .card-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+    margin: -36px auto 64px; position: relative; z-index: 2;
   }
-  .card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
-  .card h3 { font-size: 17px; font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-  .card p { color: var(--text-secondary); font-size: 14px; margin-bottom: 12px; }
-  .card p:last-child { margin-bottom: 0; }
-  .card-grid { display: flex; flex-direction: column; gap: 16px; }
+  @media (max-width: 640px) { .card-grid { grid-template-columns: 1fr; } }
 
-  /* ── Tags ── */
-  .tag {
-    display: inline-block; font-family: var(--font-en); font-size: 10px; font-weight: 600;
-    letter-spacing: 0.5px; padding: 3px 10px; border-radius: 4px;
-    background: var(--tag-bg); color: var(--tag-text); transition: all .3s;
-  }
-
-  /* ── Insight ── */
-  .insight { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 18px 22px; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin: 16px 0; transition: all .3s; }
-  .insight p { font-size: 14px; color: var(--text-secondary); margin: 0; }
-  .insight strong { color: var(--text-primary); }
-
-  /* ── Tables ── */
-  .data-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
-  .data-table th {
-    background: var(--bg-accent); padding: 10px 14px; text-align: left;
-    font-weight: 600; font-size: 13px; border-bottom: 2px solid var(--border);
-    transition: background .3s;
-  }
-  .data-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--text-secondary); transition: border-color .3s; }
-  .data-table tr:last-child td { border-bottom: none; }
-  .data-table tr { transition: background .2s; }
-  .data-table tr:hover { background: var(--bg-accent); }
-
-  /* ── Code block ── */
-  .code-block {
-    background: var(--code-bg); color: var(--code-text); border-radius: var(--radius-sm);
-    padding: 16px 20px; font-family: var(--font-mono); font-size: 13px;
-    line-height: 1.6; overflow-x: auto; margin: 12px 0; position: relative; transition: background .3s;
-  }
-  .code-block .comment { color: var(--code-comment); }
-  .code-block .cmd { color: var(--code-cmd); }
-  .code-label {
-    position: absolute; top: 8px; right: 12px;
-    font-family: var(--font-en); font-size: 10px; font-weight: 600;
-    color: var(--code-comment); letter-spacing: 0.5px;
-  }
-  code {
-    font-family: var(--font-mono); font-size: 13px;
-    background: var(--bg-accent); padding: 2px 6px; border-radius: 4px;
-    border: 1px solid var(--border); transition: all .3s;
-  }
-
-  /* ── Prompt box ── */
-  .prompt-box {
-    background: var(--code-bg); border-radius: var(--radius);
-    padding: 24px 28px; margin: 16px 0; position: relative; transition: background .3s;
-  }
-  .prompt-box-label {
-    display: inline-flex; align-items: center; gap: 6px;
-    font-family: var(--font-en); font-size: 11px; font-weight: 600;
-    letter-spacing: 1px; text-transform: uppercase; color: var(--prompt-label);
-    margin-bottom: 14px; transition: color .3s;
-  }
-  .prompt-box-text {
-    color: var(--code-text); font-size: 13.5px; line-height: 1.8;
-    white-space: pre-wrap; font-family: var(--font-mono), var(--font-jp);
-  }
-  .prompt-box-copy {
-    position: absolute; top: 16px; right: 16px;
-    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
-    color: #94A3B8; border-radius: 6px; padding: 6px 12px;
-    font-family: var(--font-en); font-size: 11px; font-weight: 500;
-    cursor: pointer; transition: all .15s;
-  }
-  .prompt-box-copy:hover { background: rgba(255,255,255,0.15); color: #E2E8F0; }
-
-  /* ── Accordion ── */
-  .accordion {
-    border: 1px solid var(--border); border-radius: var(--radius-sm);
-    margin: 16px 0; overflow: hidden; transition: border-color .3s;
-  }
-  .accordion summary {
-    padding: 14px 20px; cursor: pointer; font-size: 14px; font-weight: 500;
-    background: var(--bg-accent); color: var(--text-secondary);
-    display: flex; align-items: center; gap: 8px;
-    list-style: none; user-select: none; transition: all .3s;
-  }
-  .accordion summary::-webkit-details-marker { display: none; }
-  .accordion summary::before { content: '▶'; font-size: 10px; color: var(--text-tertiary); transition: transform .2s; }
-  .accordion[open] summary::before { transform: rotate(90deg); }
-  .accordion summary:hover { background: var(--border); }
-  .accordion .accordion-body {
-    padding: 20px; border-top: 1px solid var(--border);
-    background: var(--bg-card); font-size: 14px; transition: all .3s;
-  }
-  .accordion .accordion-body p { color: var(--text-secondary); margin-bottom: 10px; }
-
-  /* ── Numbered list ── */
-  .numbered { counter-reset: item; list-style: none; margin: 12px 0; }
-  .numbered li {
-    counter-increment: item; padding: 6px 0 6px 36px;
-    position: relative; font-size: 14px; color: var(--text-secondary);
-  }
-  .numbered li::before {
-    content: counter(item); position: absolute; left: 0; top: 6px;
-    width: 24px; height: 24px; background: var(--accent-soft);
-    color: var(--accent); font-family: var(--font-en); font-size: 12px; font-weight: 600;
-    border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    transition: all .3s;
-  }
-
-  /* ── Practice ── */
-  .practice {
-    background: linear-gradient(135deg, var(--practice-from), var(--practice-to));
-    border: 1px solid var(--practice-border); border-radius: var(--radius);
-    padding: 28px; margin: 20px 0; transition: all .3s;
-  }
-  .practice h4 { font-size: 15px; font-weight: 600; color: var(--accent); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-  .practice p { color: var(--text-secondary); font-size: 14px; }
-
-  /* ── Flow ── */
-  .flow { display: flex; align-items: center; justify-content: center; gap: 0; margin: 24px 0; flex-wrap: wrap; }
-  .flow-node {
+  .day-card {
     background: var(--bg-card); border: 1px solid var(--border);
-    border-radius: var(--radius-sm); padding: 10px 18px;
-    font-size: 13px; font-weight: 500; text-align: center; white-space: nowrap; transition: all .3s;
+    border-radius: var(--radius); padding: 32px 28px;
+    box-shadow: var(--shadow-md); transition: all .35s;
+    text-decoration: none; color: inherit; display: flex; flex-direction: column;
+    position: relative; overflow: hidden;
   }
-  .flow-node small { display: block; font-size: 11px; color: var(--text-tertiary); font-weight: 400; }
-  .flow-node.highlight { background: var(--accent); color: #fff; border-color: var(--accent); }
-  .flow-arrow { color: var(--text-tertiary); font-size: 18px; margin: 0 6px; flex-shrink: 0; }
+  .day-card:hover {
+    box-shadow: var(--shadow-lg); transform: translateY(-4px);
+    border-color: var(--accent-mid);
+  }
+  .day-card::after {
+    content: '→'; position: absolute; bottom: 28px; right: 28px;
+    font-size: 20px; color: var(--text-tertiary); transition: all .3s;
+    font-family: var(--font-en);
+  }
+  .day-card:hover::after { color: var(--accent); transform: translateX(4px); }
 
-  /* ── UI Mock ── */
-  .ui-mock {
-    background: #2A2A2C; border-radius: var(--radius); padding: 20px;
-    margin: 16px 0; font-family: -apple-system, sans-serif; overflow: hidden;
+  .day-num {
+    font-family: var(--font-en); font-size: 48px; font-weight: 700;
+    color: var(--accent-soft); line-height: 1; margin-bottom: 16px;
+    transition: color .3s;
   }
-  .ui-mock-input { background: #3A3A3C; border-radius: 12px; padding: 16px 20px; color: #8E8E93; font-size: 15px; margin-bottom: 12px; }
-  .ui-mock-bar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
-  .ui-mock-bar-left { display: flex; align-items: center; gap: 4px; }
-  .ui-mock-toggle { display: flex; background: #3A3A3C; border-radius: 8px; padding: 3px; gap: 2px; }
-  .ui-mock-toggle-item { padding: 5px 14px; border-radius: 6px; font-size: 13px; color: #8E8E93; font-weight: 500; }
-  .ui-mock-toggle-item.active { background: #5A5A5C; color: #FFFFFF; }
-  .ui-mock-plus { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; color: #8E8E93; font-size: 18px; }
-  .ui-mock-bar-right { display: flex; align-items: center; gap: 12px; }
-  .ui-mock-model { color: #8E8E93; font-size: 13px; font-weight: 500; }
-  .ui-mock-bottom { display: flex; align-items: center; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
-  .ui-mock-chip { display: inline-flex; align-items: center; gap: 6px; background: #3A3A3C; border-radius: 8px; padding: 6px 14px; color: #CCC; font-size: 12px; font-weight: 500; }
-  .ui-mock-chip-icon { font-size: 14px; }
-  .ui-mock-boost { margin-left: auto; color: #8E8E93; font-size: 12px; display: flex; align-items: center; gap: 4px; }
+  .day-card:hover .day-num { color: var(--border); }
+  [data-theme="dark"] .day-card:hover .day-num { color: var(--accent-mid); }
 
-  /* ── Checklist ── */
-  .task-list { list-style: none; margin: 12px 0; }
-  .task-list li { padding: 8px 0 8px 28px; position: relative; color: var(--text-secondary); font-size: 14px; }
-  .task-list li::before {
-    content: ''; position: absolute; left: 0; top: 12px;
-    width: 16px; height: 16px; border: 2px solid var(--border); border-radius: 4px; transition: border-color .3s;
+  .day-label {
+    font-family: var(--font-en); font-size: 10px; font-weight: 600;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--text-tertiary);
+    margin-bottom: 8px;
+  }
+  .day-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; line-height: 1.4; }
+  .day-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.7; flex-grow: 1; }
+
+  .day-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 16px; }
+  .day-tag {
+    font-family: var(--font-en); font-size: 10px; font-weight: 500;
+    padding: 3px 10px; border-radius: 100px; letter-spacing: 0.3px;
+    background: var(--bg-accent); color: var(--text-tertiary); transition: all .3s;
   }
 
-  a { color: var(--accent); text-decoration: none; transition: color .3s; }
-  a:hover { text-decoration: underline; }
+  /* ── Footer ── */
+  footer {
+    padding: 48px 0; text-align: center; font-size: 12px; color: var(--text-tertiary);
+  }
 
-  footer { padding: 48px 0 40px; text-align: center; color: var(--text-tertiary); font-size: 13px; }
-
-  /* ── Side Nav (scroll spy) ── */
-  .side-nav {
-    position: fixed; left: 20px; top: 50%; transform: translateY(-50%);
-    z-index: 90; display: flex; flex-direction: column; gap: 0;
-    opacity: 0; transition: opacity .4s;
+  /* ── Fade ── */
+  .fade-up {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity .6s ease, transform .6s ease;
   }
-  .side-nav.visible { opacity: 1; }
-  .side-nav-item {
-    display: flex; align-items: center; gap: 10px;
-    padding: 8px 0; cursor: pointer; text-decoration: none;
-    position: relative;
-  }
-  .side-nav-dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--border); transition: all .3s;
-    flex-shrink: 0; position: relative; z-index: 1;
-  }
-  .side-nav-item.active .side-nav-dot {
-    background: var(--accent); width: 10px; height: 10px;
-    box-shadow: 0 0 0 3px var(--accent-soft);
-  }
-  .side-nav-label {
-    font-family: var(--font-jp); font-size: 11px; font-weight: 500;
-    letter-spacing: 0.5px;
-    color: var(--text-tertiary); white-space: nowrap;
-    opacity: 0; transform: translateX(-4px);
-    transition: opacity .2s, transform .2s; pointer-events: none;
-  }
-  .side-nav-item:hover .side-nav-label,
-  .side-nav-item.active .side-nav-label {
-    opacity: 1; transform: translateX(0);
-  }
-  .side-nav-item.active .side-nav-label { color: var(--accent); }
-  .side-nav-line {
-    width: 1px; height: 100%; background: var(--border);
-    position: absolute; left: 3.5px; top: 0; z-index: 0;
-    transition: background .3s;
-  }
-  .side-nav-track {
-    position: relative; padding-left: 0;
-  }
-  .side-nav-track::before {
-    content: ''; position: absolute; left: 4px; top: 16px; bottom: 16px;
-    width: 1px; background: var(--border); transition: background .3s;
-  }
-  @media (max-width: 1100px) { .side-nav { display: none; } }
-
-  @media (max-width: 640px) {
-    .controls { top: 8px; right: 8px; }
-    .cover { padding: 100px 20px 40px; min-height: 60vh; }
-    .cover-meta { flex-direction: column; gap: 8px; }
-    .agenda { margin-left: 16px; margin-right: 16px; }
-  }
-  @media print {
-    .controls { display: none; } body { background: #fff; }
-    .card { box-shadow: none; border: 1px solid #ddd; }
-    .fade-up { opacity: 1 !important; transform: none !important; }
-  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
 </style>
 </head>
 <body>
 
-<!-- SVG Icons -->
-<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
-  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/></symbol>
-  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></symbol>
-  <symbol id="i-type" viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></symbol>
-  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
-  <symbol id="i-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
-  <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></symbol>
-  <symbol id="i-terminal" viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></symbol>
-  <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></symbol>
-  <symbol id="i-message" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></symbol>
-  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></symbol>
-  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></symbol>
-  <symbol id="i-zap" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
-  <symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
-  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
-  <symbol id="i-repeat" viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 01-4 4H3"/></symbol>
-  <symbol id="i-layers" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></symbol>
-  <symbol id="i-tool" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></symbol>
-  <symbol id="i-file-text" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></symbol>
-  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
-  <symbol id="i-palette" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="8" cy="10" r="1.5" fill="currentColor"/><circle cx="12" cy="7" r="1.5" fill="currentColor"/><circle cx="16" cy="10" r="1.5" fill="currentColor"/></symbol>
-</svg>
-
-<!-- Controls -->
-<div class="controls">
-  <span class="tone-label" onclick="toggleTone()" id="toneLabel">LUNAR GRAY</span>
-  <button class="ctrl-btn" onclick="toggleTheme()" title="ダーク/ライトモード" id="themeBtn">
-    <span class="icon"><svg><use href="#i-moon"/></svg></span>
-  </button>
-  <button class="ctrl-btn" onclick="changeFontSize(-1)" title="文字を小さく" id="fsMinus">
-    <span style="font-family:var(--font-en);font-size:13px;font-weight:700;line-height:1">A<span style="font-size:9px">−</span></span>
-  </button>
-  <button class="ctrl-btn" onclick="changeFontSize(1)" title="文字を大きく" id="fsPlus">
-    <span style="font-family:var(--font-en);font-size:13px;font-weight:700;line-height:1">A<span style="font-size:14px">+</span></span>
+<!-- Dark mode toggle -->
+<div class="ctrl">
+  <button class="ctrl-btn" onclick="document.documentElement.setAttribute('data-theme', document.documentElement.getAttribute('data-theme')==='dark'?'':'dark')" title="ダーク/ライト">
+    <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/></svg>
   </button>
 </div>
 
-<!-- Side Nav -->
-<nav class="side-nav" id="sideNav">
-  <div class="side-nav-track">
-    <a class="side-nav-item active" href="#sec-overview"><span class="side-nav-dot"></span><span class="side-nav-label">全体像</span></a>
-    <a class="side-nav-item" href="#sec-setup"><span class="side-nav-dot"></span><span class="side-nav-label">セットアップ</span></a>
-    <a class="side-nav-item" href="#sec-cowork"><span class="side-nav-dot"></span><span class="side-nav-label">Cowork</span></a>
-    <a class="side-nav-item" href="#sec-handson"><span class="side-nav-dot"></span><span class="side-nav-label">実践</span></a>
-    <a class="side-nav-item" href="#sec-next"><span class="side-nav-dot"></span><span class="side-nav-label">次回に向けて</span></a>
-    <a class="side-nav-item" href="#sec-appendix-a"><span class="side-nav-dot"></span><span class="side-nav-label">Code vs Cowork</span></a>
-    <a class="side-nav-item" href="#sec-appendix-b"><span class="side-nav-dot"></span><span class="side-nav-label">ハーネス</span></a>
-  </div>
-</nav>
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-label">AI Training Program</div>
+  <h1><em>Claude</em> 研修テキスト</h1>
+  <p class="hero-sub">Claude Code & Coworkを使った業務自動化の研修教材</p>
+</div>
 
-<!-- Cover -->
-<header class="cover">
-  <div class="cover-label">AI Training Session — Day 1</div>
-  <h1><em>Claude Code</em> & <em>Cowork</em><br>セットアップ研修</h1>
-  <p class="cover-sub">Claudeをインストールして、実際の業務を自動化する第一歩。<br>今日のゴールは「AIに仕事をお願いできる環境」を整えることです。</p>
-  <div class="cover-meta">
-    <span><span class="icon"><svg><use href="#i-clock"/></svg></span> 所要時間：約60分</span>
-    <span><span class="icon"><svg><use href="#i-user"/></svg></span> 前提：Claude Proプラン加入済み</span>
-  </div>
-</header>
-
-<!-- Agenda -->
+<!-- Cards -->
 <div class="container">
-  <div class="agenda fade-up">
-    <h2>Today's Agenda</h2>
-    <div class="agenda-grid">
-      <div class="agenda-item"><div class="agenda-num">1</div><div class="agenda-text"><strong>全体像を知る</strong><small>5分 — Code・Coworkって何？</small></div></div>
-      <div class="agenda-item"><div class="agenda-num">2</div><div class="agenda-text"><strong>Claude Codeをインストール</strong><small>20分 — Claudeと会話しながらセットアップ</small></div></div>
-      <div class="agenda-item"><div class="agenda-num">3</div><div class="agenda-text"><strong>Coworkの画面を覚える</strong><small>15分 — 切替・フォルダー・マニュアル・スキル</small></div></div>
-      <div class="agenda-item"><div class="agenda-num">4</div><div class="agenda-text"><strong>実践タスクに挑戦</strong><small>20分 — 実際の業務で体験する</small></div></div>
-    </div>
+  <div class="card-grid">
+    <a href="day1.html" class="day-card fade-up">
+      <div class="day-num">01</div>
+      <div class="day-label">Day 1 — Setup</div>
+      <div class="day-title">Claude Code & Cowork<br>セットアップ研修</div>
+      <div class="day-desc">Claude Desktopのインストールから、Coworkの画面操作、フォルダー・マニュアルの概念、ハーネスエンジニアリングまで。</div>
+      <div class="day-tags">
+        <span class="day-tag">Install</span>
+        <span class="day-tag">Cowork</span>
+        <span class="day-tag">Claude Code</span>
+        <span class="day-tag">CLAUDE.md</span>
+      </div>
+    </a>
+
+    <a href="day2.html" class="day-card fade-up">
+      <div class="day-num">02</div>
+      <div class="day-label">Day 2 — Automation</div>
+      <div class="day-title">日報チェック自動化<br>& Record a skill</div>
+      <div class="day-desc">Coworkで日報チェックを実演し、画面録画で手順をスキル化。一度教えたら次から一言で再実行。</div>
+      <div class="day-tags">
+        <span class="day-tag">Hands-on</span>
+        <span class="day-tag">Record a skill</span>
+        <span class="day-tag">Chatwork API</span>
+      </div>
+    </a>
   </div>
 </div>
-
-<hr class="divider">
-
-<!-- Section 1 -->
-<section id="sec-overview">
-  <div class="container">
-    <div class="section-label fade-up">01 — Overview</div>
-    <h2 class="fade-up">全体像を知る</h2>
-    <p class="section-lead fade-up">まず「何ができるか」を把握する（5分）</p>
-
-    <div class="card fade-up">
-      <h3><span class="icon"><svg><use href="#i-layers"/></svg></span> Claudeの3つの使い方</h3>
-      <table class="data-table">
-        <thead><tr><th>機能</th><th>何ができる？</th><th>イメージ</th></tr></thead>
-        <tbody>
-          <tr><td><strong>チャット</strong></td><td>ブラウザやアプリで質問・相談・文章作成</td><td>賢い相談相手</td></tr>
-          <tr><td><strong>Claude Code</strong></td><td>ターミナルからプログラムを書かせる・実行する</td><td>プログラマーを雇う</td></tr>
-          <tr><td><strong>Cowork</strong></td><td>PCの画面を見てマウス・キーボードを直接操作</td><td>隣の席の同僚に頼む</td></tr>
-        </tbody>
-      </table>
-      <div class="insight">
-        <p><strong>今日のポイント：</strong>Code も Cowork も、使い方はシンプルです。<strong>「やりたいことを日本語で伝える」</strong>だけ。プログラミングの知識は必要ありません。</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<hr class="divider">
-
-<!-- Section 2 -->
-<section id="sec-setup">
-  <div class="container">
-    <div class="section-label fade-up">02 — Setup</div>
-    <h2 class="fade-up">Claude Code をインストール</h2>
-    <p class="section-lead fade-up">Claudeに教えてもらいながらセットアップ（20分）</p>
-
-    <div class="card-grid">
-      <div class="card fade-up">
-        <h3><span class="icon"><svg><use href="#i-download"/></svg></span> Step 2-1：Claude Desktop をインストール</h3>
-        <p>まず、PCにClaude Desktopアプリを入れます。</p>
-        <ol class="numbered">
-          <li><a href="https://claude.ai/download" target="_blank">claude.ai/download</a> にアクセス</li>
-          <li>お使いのOS（Mac / Windows）用のインストーラーをダウンロード</li>
-          <li>ダウンロードしたファイルを実行してインストール</li>
-          <li>アプリを起動し、Claudeアカウント（Proプラン）でログイン</li>
-        </ol>
-        <div class="insight"><p>ブラウザの claude.ai と同じアカウントでログインしてください。Proプランの機能がそのまま使えます。</p></div>
-      </div>
-
-      <div class="card fade-up">
-        <h3><span class="icon"><svg><use href="#i-terminal"/></svg></span> Step 2-2：Claudeに「インストール方法」を聞く <span class="tag">体験学習</span></h3>
-        <p>手順書を読む代わりに、<strong>Claude自身にインストールの手順を教えてもらいます</strong>。これが、Claudeと一緒に仕事をする一番の練習です。</p>
-        <p>Claude Desktopアプリのチャット画面で、以下をコピーして送信してください。</p>
-        <div class="prompt-box">
-          <div class="prompt-box-label">📋 コピーして送信</div>
-          <button class="prompt-box-copy" onclick="copyPrompt(this)">コピー</button>
-          <div class="prompt-box-text">Claude Codeをこのパソコンにインストールしたいです。
-
-私のPCの環境：
-・OS：（ここにMac or Windowsを記入）
-・プログラミング経験：ほぼなし
-・Node.jsがインストールされているか分かりません
-
-以下の手順でお願いします：
-1. まず今の環境を確認する方法を教えてください
-2. 必要なものがあればインストール方法を教えてください
-3. Claude Codeのインストールコマンドを教えてください
-4. インストールが成功したか確認する方法を教えてください
-
-各ステップで私が実行した結果を伝えるので、問題があれば一緒に解決してください。</div>
-        </div>
-        <div class="insight"><p><strong>なぜこの方法？</strong> — PCの環境は人それぞれ違います。Claudeに聞きながら進めれば、あなたのPCに合った手順を教えてくれます。エラーが出ても、そのまま貼れば解決方法を教えてくれます。</p></div>
-
-        <details class="accordion">
-          <summary>📖 手順リファレンス（困ったときに開いてください）</summary>
-          <div class="accordion-body">
-            <p><strong>ネイティブインストール（おすすめ）</strong></p>
-            <p>Mac / Linux：</p>
-            <div class="code-block"><span class="cmd">curl -fsSL claude.ai/install.sh | bash</span></div>
-            <p>Windows（PowerShell）：</p>
-            <div class="code-block"><span class="cmd">irm https://claude.ai/install.ps1 | iex</span></div>
-            <p><strong>npm経由（Node.js 18以降が必要）：</strong></p>
-            <div class="code-block"><span class="cmd">npm install -g @anthropic-ai/claude-code</span></div>
-            <table class="data-table" style="margin-top:12px">
-              <tbody>
-                <tr><td>「permission denied」</td><td><code>sudo</code> は使わない。Claudeに状況を伝えて解決方法を聞く</td></tr>
-                <tr><td>「Node.js not found」</td><td>Node.js 18以降のインストールが必要</td></tr>
-                <tr><td>「command not found: claude」</td><td>ターミナルを閉じて開き直す。PATHの設定が必要な場合も</td></tr>
-                <tr><td>ログイン画面で止まる</td><td><code>/login</code> → ブラウザでログイン → 「Claude App (Pro plan)」を選択</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </details>
-      </div>
-
-      <div class="card fade-up">
-        <h3><span class="icon"><svg><use href="#i-check"/></svg></span> Step 2-3：動作確認 <span class="tag">ゴール</span></h3>
-        <p>ターミナルで <code>claude</code> と入力して起動を確認します。</p>
-        <div class="code-block">
-          <div class="code-label">TERMINAL</div>
-          <span class="comment">✻ Welcome to Claude Code!</span><br><br>
-          <span class="cmd">&gt; こんにちは！日本語で返事してください</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<hr class="divider">
-
-<!-- Section 3 -->
-<section id="sec-cowork">
-  <div class="container">
-    <div class="section-label fade-up">03 — Cowork</div>
-    <h2 class="fade-up">Coworkの画面を覚える</h2>
-    <p class="section-lead fade-up">4つの大事な概念（15分）</p>
-
-    <div class="card-grid">
-      <div class="card fade-up">
-        <h3><span class="icon"><svg><use href="#i-monitor"/></svg></span> 3-1：チャット ↔ Cowork の切り替え <span class="tag">新UI</span></h3>
-        <p>入力欄のすぐ上に、<strong>「チャット」と「Cowork」の切り替えトグル</strong>があります。</p>
-        <div class="ui-mock">
-          <div class="ui-mock-input">本日はどのようなお手伝いをさせていただけますか？</div>
-          <div class="ui-mock-bar">
-            <div class="ui-mock-bar-left">
-              <div class="ui-mock-plus">+</div>
-              <div class="ui-mock-toggle"><div class="ui-mock-toggle-item">チャット</div><div class="ui-mock-toggle-item active">Cowork</div></div>
-            </div>
-            <div class="ui-mock-bar-right"><div class="ui-mock-model">Opus 4.6 中 ∨</div><div style="color:#8E8E93;font-size:18px;">🎤</div></div>
-          </div>
-          <div class="ui-mock-bottom">
-            <div class="ui-mock-chip"><span class="ui-mock-chip-icon">📁</span>プロジェクトまたはフォルダー ∨</div>
-            <div class="ui-mock-chip"><span class="ui-mock-chip-icon">🤚</span>マニュアル ∨</div>
-            <div class="ui-mock-boost">⚡ 8月5日まで使用量が2倍</div>
-          </div>
-        </div>
-        <table class="data-table">
-          <thead><tr><th>モード</th><th>できること</th><th>使い分け</th></tr></thead>
-          <tbody>
-            <tr><td><strong>チャット</strong></td><td>テキストでの会話・文章作成・相談</td><td>質問する、文面を考えてもらう時</td></tr>
-            <tr><td><strong>Cowork</strong></td><td>PC画面の操作、ファイル処理、ブラウザ操作</td><td>実際に「作業」をしてもらう時</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="card fade-up">
-        <h3><span class="icon"><svg><use href="#i-folder"/></svg></span> 3-2：「プロジェクトまたはフォルダー」 <span class="tag">重要</span></h3>
-        <p>Coworkに作業を頼むとき、<strong>「どこのファイルを使うか」を指定する</strong>のがこの設定です。</p>
-        <div class="insight"><p><strong>フォルダーを指定 ＝ Claudeの作業場所を決める。</strong>「デスクトップの日報フォルダ」を指定すると、Claudeはそのフォルダ内のファイルを見たり編集できるようになります。指定していないフォルダには勝手にアクセスしません。</p></div>
-        <ol class="numbered">
-          <li>入力欄の下にある「<strong>プロジェクトまたはフォルダー</strong>」をクリック</li>
-          <li>作業に使いたいフォルダを選択</li>
-          <li>Claudeがそのフォルダの中身を見られるようになる</li>
-        </ol>
-      </div>
-
-      <div class="card fade-up">
-        <h3><span class="icon"><svg><use href="#i-book"/></svg></span> 3-3：「マニュアル」で指示を自動化する <span class="tag">重要</span></h3>
-        <p><strong>「マニュアル」を設定しておくと、Claudeが毎回自動でその指示に従って動きます。</strong></p>
-        <div class="insight"><p><strong>マニュアル ＝ Claudeへの「いつものルール」。</strong>「ファイル名には必ず日付を入れて」「確認してから実行して」などを書いておくと、いちいち指示しなくてもClaudeが守ってくれます。</p></div>
-        <div class="prompt-box">
-          <div class="prompt-box-label">📋 マニュアルの記入例</div>
-          <button class="prompt-box-copy" onclick="copyPrompt(this)">コピー</button>
-          <div class="prompt-box-text">## 基本ルール
-- 日本語で回答してください
-- ファイルを変更する前に必ず確認を取ってください
-- 作業結果は分かりやすく要約してください
-
-## ファイル操作
-- 新しく作るファイル名には日付（YYYY-MM-DD）を先頭に付けてください
-- 元のファイルは削除せず、コピーを作って編集してください</div>
-        </div>
-      </div>
-
-      <div class="card fade-up">
-        <h3><span class="icon"><svg><use href="#i-repeat"/></svg></span> 3-4：「スキル」で作業手順を覚えさせる <span class="tag">発展</span></h3>
-        <p>Coworkで一度やった作業は、<strong>「スキル」として保存</strong>できます。次回から同じ作業を一言で呼び出せます。</p>
-        <div class="flow">
-          <div class="flow-node">初回：手順を<br>教えながら実行</div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-node highlight">スキルとして<br>保存</div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-node">次回から<br>一言で実行</div>
-        </div>
-        <div class="insight"><p><strong>日報チェックも最終的にはスキル化がゴールです。</strong>今日はまず手動で一度やってみて、うまくいったらスキルに登録する流れで進めましょう。</p></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<hr class="divider">
-
-<!-- Section 4 -->
-<section id="sec-handson">
-  <div class="container">
-    <div class="section-label fade-up">04 — Hands-on</div>
-    <h2 class="fade-up">実践タスクに挑戦</h2>
-    <p class="section-lead fade-up">自分の業務でClaudeを使ってみる（20分）</p>
-
-    <div class="card-grid">
-      <div class="card fade-up">
-        <h3><span class="icon"><svg><use href="#i-terminal"/></svg></span> 実践A：Claude Codeで日報チェック自動化を始める</h3>
-        <div class="prompt-box">
-          <div class="prompt-box-label">📋 コピーして送信（Claude Codeターミナルに）</div>
-          <button class="prompt-box-copy" onclick="copyPrompt(this)">コピー</button>
-          <div class="prompt-box-text">Chatwork APIを使って、店舗の日報提出チェックを自動化するPythonスクリプトを一緒に作りたいです。
-
-【背景】
-飲食店を4店舗（升屋、海神、串神坊、肉もつ屋）運営しています。
-毎朝、各店舗がChatworkの「店舗日報」グループに数値日報を投稿するルールです。
-現在は目視で提出を確認し、未提出の店舗にはリマインドメッセージを手動で送っています。
-
-【自動化したいこと】
-1. Chatwork APIで「店舗日報」グループの投稿を取得する
-2. 4店舗それぞれの提出有無を判定する
-3. 未提出の店舗にリマインドメッセージを自動送信する
-
-まずは全体像を説明してから、ステップバイステップで進めてください。
-各ステップで私の確認を取ってから次に進んでください。</div>
-        </div>
-        <div class="insight"><p><strong>Chatwork APIトークンについて：</strong>今日はまず仕組みの設計とコードの作成まで。APIトークンが発行されたら実際に動かしましょう。</p></div>
-      </div>
-
-      <div class="card fade-up">
-        <h3><span class="icon"><svg><use href="#i-monitor"/></svg></span> 実践B：Coworkで身近なタスクを体験する</h3>
-        <p>Coworkモードに切り替えて、繰り返し作業を1つ試してみましょう。</p>
-        <div class="practice">
-          <h4><span class="icon"><svg><use href="#i-zap"/></svg></span> おすすめの練習タスク</h4>
-          <div class="prompt-box" style="margin-top:12px">
-            <div class="prompt-box-label">例：リマインドテンプレート生成</div>
-            <div class="prompt-box-text" style="font-size:13px">今日の日付で、以下4店舗分の日報リマインドメッセージを作ってください。
-
-店舗：升屋、海神、串神坊、肉もつ屋
-
-テンプレート：
-[info][title]【◯月◯日（◯）の数値日報について】[/title]
-現時点で「【報告】店舗日報 チャット」にて上記報告の確認が出来ていません。
-ご確認いただき、上記チャットへご対応をお願いいたします。[/info]
-
-上記を各店舗分、今日の日付を入れて作成し、テキストファイルに保存してください。</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card fade-up">
-        <h3><span class="icon"><svg><use href="#i-repeat"/></svg></span> 実践C：2つの場所を行き来して照合する <span class="tag">Coworkの真骨頂</span></h3>
-        <p>「あっちの画面の数字」と「こっちの画面の数字」を見比べる作業。Coworkはこれが得意です。</p>
-        <div class="flow">
-          <div class="flow-node">場所A<small>（ブラウザ/サイト）</small></div>
-          <div class="flow-arrow">←→</div>
-          <div class="flow-node highlight">Claude が<br>両方を見比べる</div>
-          <div class="flow-arrow">←→</div>
-          <div class="flow-node">場所B<small>（Excel/別サイト）</small></div>
-        </div>
-        <div class="prompt-box">
-          <div class="prompt-box-label">📋 コピーして送信</div>
-          <button class="prompt-box-copy" onclick="copyPrompt(this)">コピー</button>
-          <div class="prompt-box-text">以下の照合作業をお願いします。
-
-【場所A】ブラウザで開いている「本部管理」スプレッドシート
-  → ◯月◯日の各店舗の「現金売上（税込金額）」の欄
-
-【場所B】手元のExcel日報ファイル（フォルダーに設定済み）
-  → 同じ日付の各店舗の「現金売上」の列
-
-【やってほしいこと】
-1. 場所Aの各店舗の数値を確認してメモしてください
-2. 場所Bの該当するセルの数値と見比べてください
-3. 一致していない箇所があれば、どこがどう違うか報告してください
-4. 私が確認した上で、場所Bの数値を場所Aに合わせて訂正してください
-
-※訂正する前に必ず差異の一覧を見せてください。勝手に直さないでください。</div>
-        </div>
-        <table class="data-table" style="margin-top:16px">
-          <thead><tr><th>業務</th><th>場所A</th><th>場所B</th></tr></thead>
-          <tbody>
-            <tr><td><strong>銀行入金確認</strong></td><td>レジ〆チャットの現金売上額</td><td>ネットバンクの入出金明細</td></tr>
-            <tr><td><strong>Excel日報チェック</strong></td><td>Chatworkの数値日報の投稿</td><td>Dropbox内のExcel日報ファイル</td></tr>
-            <tr><td><strong>レジ〆確認</strong></td><td>清算レシートの報告チャット</td><td>PayPay管理画面の決済金額</td></tr>
-            <tr><td><strong>予約確認</strong></td><td>メールの予約通知</td><td>Resty予約台帳の登録内容</td></tr>
-          </tbody>
-        </table>
-        <div class="insight"><p><strong>コツ：</strong>「訂正する前に必ず差異の一覧を見せてください」と書いておくと、Claudeが勝手に修正せず確認を取ってくれます。マニュアルにも書いておくのがおすすめです。</p></div>
-      </div>
-
-      <div class="card fade-up">
-        <h3><span class="icon"><svg><use href="#i-tool"/></svg></span> 困ったときの対処法</h3>
-        <table class="data-table">
-          <thead><tr><th>困ったこと</th><th>対処法</th></tr></thead>
-          <tbody>
-            <tr><td>返事が途中で止まった</td><td>「続けてください」と入力</td></tr>
-            <tr><td>思った結果にならない</td><td>もっと具体的に指示し直す（「◯◯は△△にして」）</td></tr>
-            <tr><td>エラーが出た</td><td>エラーメッセージをそのままClaudeに貼る</td></tr>
-            <tr><td>Coworkの操作が変になった</td><td>マウスやキーボードに触らず完了を待つ</td></tr>
-            <tr><td>利用上限に達した</td><td>5時間で回復。<strong>8月5日まで使用量が2倍</strong>の期間中</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</section>
-
-<hr class="divider">
-
-<!-- Next Steps -->
-<section id="sec-next">
-  <div class="container">
-    <div class="section-label fade-up">05 — Next Steps</div>
-    <h2 class="fade-up">次回に向けて</h2>
-
-    <div class="card fade-up" style="border-left: 3px solid var(--accent);">
-      <h3><span class="icon"><svg><use href="#i-check"/></svg></span> 準備をお願いします</h3>
-      <ul class="task-list">
-        <li>Chatwork APIトークンを発行する（管理者画面から取得可能）</li>
-        <li>「本部管理」スプレッドシートの構造を共有する</li>
-        <li>Excel日報のサンプルファイル（1日分）を用意する</li>
-        <li>今日作ったスクリプト（Claude Codeで作成したもの）を保存しておく</li>
-        <li>Coworkで試したタスクのうち、スキル化したいものをリストアップ</li>
-        <li><strong>ハーネスエンジニアリングの考え方を学ぶ</strong>（下の解説を読んでおく）</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<hr class="divider">
-
-<!-- Code vs Cowork -->
-<section id="sec-appendix-a">
-  <div class="container">
-    <div class="section-label fade-up">Appendix A</div>
-    <h2 class="fade-up">Code と Cowork — 根っこは同じもの</h2>
-    <p class="section-lead fade-up">2つのツールの中身は同じClaudeが動いています。違いは「操作の窓口」だけです。</p>
-
-    <div class="card fade-up">
-      <table class="data-table">
-        <thead><tr><th></th><th>Claude Code</th><th>Cowork</th></tr></thead>
-        <tbody>
-          <tr><td><strong>窓口</strong></td><td>ターミナル（黒い画面）</td><td>デスクトップアプリのGUI</td></tr>
-          <tr><td><strong>得意なこと</strong></td><td>スクリプト作成、ファイル処理<br>→ コードで「仕組み」を作る</td><td>画面操作、ブラウザ操作<br>→ 今すぐ「手作業」を代行</td></tr>
-          <tr><td><strong>向いてる場面</strong></td><td>「毎日繰り返す作業」を<br>スクリプトにして自動化</td><td>「今この1回」の作業を<br>その場で代行してもらう</td></tr>
-          <tr><td><strong>中のAI</strong></td><td colspan="2" style="text-align:center;font-weight:600">同じClaude（同じ頭脳が動いている）</td></tr>
-        </tbody>
-      </table>
-      <div class="insight">
-        <p>日報チェックを「<strong>今日だけやってほしい</strong>」→ Coworkに頼む<br>日報チェックを「<strong>毎朝自動で実行する仕組みにしたい</strong>」→ Claude Codeでスクリプトを作る<br>Coworkで試してうまくいったやり方を、Codeで「仕組み」に変換する流れが最も効率的です。</p>
-      </div>
-      <div class="flow" style="margin-top:20px">
-        <div class="flow-node">Coworkで<br>手作業を試す</div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-node">うまくいった<br>手順を確認</div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-node highlight">Claude Codeで<br>仕組みに変換</div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-node">毎日<br>自動で実行</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<hr class="divider">
-
-<!-- Harness Engineering -->
-<section id="sec-appendix-b">
-  <div class="container">
-    <div class="section-label fade-up">Appendix B</div>
-    <h2 class="fade-up">ハーネスエンジニアリング</h2>
-    <p class="section-lead fade-up">AIへの「いつもの指示書」を書く技術</p>
-
-    <div class="card fade-up">
-      <h3><span class="icon"><svg><use href="#i-file-text"/></svg></span> CLAUDE.md とマニュアル — 毎回自動で読み込まれる指示ファイル</h3>
-      <p>馬（AI）がどんなに賢くても、手綱（ハーネス）がなければ意図通りに走れません。Claude CodeにもCoworkにも、<strong>「毎回自動で読み込まれる指示ファイル」</strong>の仕組みがあります。</p>
-      <table class="data-table">
-        <thead><tr><th></th><th>Claude Code</th><th>Cowork</th></tr></thead>
-        <tbody>
-          <tr><td><strong>指示ファイル</strong></td><td><code>CLAUDE.md</code></td><td>マニュアル</td></tr>
-          <tr><td><strong>置き場所</strong></td><td>プロジェクトフォルダの直下に<br><code>CLAUDE.md</code> を作る</td><td>入力欄の下の<br>「🤚 マニュアル」に記入</td></tr>
-          <tr><td><strong>いつ読まれる？</strong></td><td>Claude Code起動時に自動</td><td>会話の開始時に自動</td></tr>
-          <tr><td><strong>何を書く？</strong></td><td>プロジェクト固有のルール・<br>ファイル構成の説明など</td><td>作業全般のルール・確認手順・<br>ファイル命名規則など</td></tr>
-        </tbody>
-      </table>
-
-      <div class="prompt-box" style="margin-top:20px">
-        <div class="prompt-box-label">📋 CLAUDE.md の記入例（Claude Code用）</div>
-        <button class="prompt-box-copy" onclick="copyPrompt(this)">コピー</button>
-        <div class="prompt-box-text"># エスケイ 日報チェックプロジェクト
-
-## 基本ルール
-- 日本語で回答すること
-- ファイルを変更する前に必ず確認を取ること
-- エラーが出たら原因と対処法をセットで説明すること
-
-## プロジェクト概要
-- 飲食4店舗（升屋、海神、串神坊、肉もつ屋）の日報提出チェック自動化
-- Chatwork APIを使用
-- 対象グループ：「【報告】店舗日報（数値日報と営業日報）」
-
-## ファイル構成
-- main.py：メインスクリプト
-- config.json：APIトークン・店舗リスト等の設定
-- templates/：リマインドメッセージのテンプレート</div>
-      </div>
-
-      <div class="insight">
-        <p><strong>CLAUDE.mdやマニュアルは「一度書いたら終わり」ではありません。</strong>使いながら「これも書いておけばよかった」と気づいたら、どんどん追記してください。AIと仕事をする中で、この指示書を育てていくこと自体がハーネスエンジニアリングです。</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<hr class="divider">
-
-<!-- Reference Links -->
-<section>
-  <div class="container">
-    <div class="card fade-up">
-      <h3><span class="icon"><svg><use href="#i-layers"/></svg></span> 参考リンク</h3>
-      <table class="data-table">
-        <thead><tr><th>リソース</th><th>URL</th></tr></thead>
-        <tbody>
-          <tr><td>Claude Desktop ダウンロード</td><td><a href="https://claude.ai/download" target="_blank">claude.ai/download</a></td></tr>
-          <tr><td>Claude Code クイックスタート</td><td><a href="https://docs.anthropic.com/en/docs/claude-code/quickstart" target="_blank">docs.anthropic.com/claude-code/quickstart</a></td></tr>
-          <tr><td>Claude サポートセンター</td><td><a href="https://support.claude.com" target="_blank">support.claude.com</a></td></tr>
-          <tr><td>Chatwork API ドキュメント</td><td><a href="https://developer.chatwork.com/" target="_blank">developer.chatwork.com</a></td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
 
 <footer>
-  <p>AI Training Session — Claude Code & Cowork セットアップ研修</p>
+  <p>AI Training Program — Claude Code & Cowork</p>
 </footer>
 
 <script>
-// Tone toggle
-function toggleTone() {
-  const h = document.documentElement;
-  const current = h.getAttribute('data-tone');
-  const next = current === 'ink' ? 'blue' : 'ink';
-  h.setAttribute('data-tone', next);
-  document.getElementById('toneLabel').textContent = next === 'ink' ? 'LUNAR GRAY' : 'BLUE';
-}
-
-// Theme toggle (dark/light)
-function toggleTheme() {
-  const h = document.documentElement, d = h.getAttribute('data-theme') === 'dark';
-  h.setAttribute('data-theme', d ? '' : 'dark');
-  document.querySelector('#themeBtn .icon svg use').setAttribute('href', d ? '#i-moon' : '#i-sun');
-}
-
-// Font size (5 steps: 1=smallest, 3=default, 5=largest)
-let fsLevel = 3;
-function changeFontSize(delta) {
-  fsLevel = Math.max(1, Math.min(5, fsLevel + delta));
-  const h = document.documentElement;
-  if (fsLevel === 3) {
-    h.removeAttribute('data-fs');
-  } else {
-    h.setAttribute('data-fs', fsLevel);
-  }
-  // Dim button at min/max
-  document.getElementById('fsMinus').style.opacity = fsLevel <= 1 ? '0.35' : '1';
-  document.getElementById('fsPlus').style.opacity = fsLevel >= 5 ? '0.35' : '1';
-}
-
-// Copy prompt
-function copyPrompt(btn) {
-  const text = btn.closest('.prompt-box').querySelector('.prompt-box-text').textContent;
-  navigator.clipboard.writeText(text).then(() => {
-    btn.textContent = 'コピーしました！';
-    setTimeout(() => { btn.textContent = 'コピー'; }, 2000);
-  });
-}
-
-// IntersectionObserver fade-in
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((e, i) => {
     if (e.isIntersecting) {
-      setTimeout(() => e.target.classList.add('visible'), i * 60);
+      setTimeout(() => e.target.classList.add('visible'), i * 120);
       observer.unobserve(e.target);
     }
   });
-}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+}, { threshold: 0.1 });
 document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-
-// Side nav scroll spy
-const sideNav = document.getElementById('sideNav');
-const navItems = sideNav.querySelectorAll('.side-nav-item');
-const sections = document.querySelectorAll('section[id]');
-const coverEl = document.querySelector('.cover');
-
-// Show/hide side nav
-const coverObserver = new IntersectionObserver(([entry]) => {
-  sideNav.classList.toggle('visible', !entry.isIntersecting);
-}, { threshold: 0 });
-coverObserver.observe(coverEl);
-
-// Scroll-based active section detection (more reliable than IO for short sections)
-function updateActiveNav() {
-  const scrollY = window.scrollY + window.innerHeight * 0.3;
-  let currentId = '';
-  sections.forEach(sec => {
-    if (sec.offsetTop <= scrollY) {
-      currentId = sec.id;
-    }
-  });
-  navItems.forEach(item => {
-    item.classList.toggle('active', item.getAttribute('href') === '#' + currentId);
-  });
-}
-window.addEventListener('scroll', updateActiveNav, { passive: true });
-updateActiveNav();
-
-// Smooth scroll on click
-navItems.forEach(item => {
-  item.addEventListener('click', (e) => {
-    e.preventDefault();
-    const target = document.querySelector(item.getAttribute('href'));
-    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
-});
 </script>
 </body>
 </html>
