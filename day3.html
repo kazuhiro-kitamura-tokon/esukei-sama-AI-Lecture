@@ -460,7 +460,7 @@
     <a class="side-nav-item active" href="#sec-review"><span class="side-nav-dot"></span><span class="side-nav-label">振り返り</span></a>
     <a class="side-nav-item" href="#sec-tools"><span class="side-nav-dot"></span><span class="side-nav-label">4つの道具</span></a>
     <a class="side-nav-item" href="#sec-recipes"><span class="side-nav-dot"></span><span class="side-nav-label">レシピ</span></a>
-    <a class="side-nav-item" href="#sec-next"><span class="side-nav-dot"></span><span class="side-nav-label">次回に向けて</span></a>
+    <a class="side-nav-item" href="#sec-next"><span class="side-nav-dot"></span><span class="side-nav-label">自走に向けて</span></a>
     <a class="side-nav-item" href="#sec-roadmap"><span class="side-nav-dot"></span><span class="side-nav-label">ロードマップ</span></a>
   </div>
 </nav>
@@ -805,11 +805,11 @@
 <!-- Section 4: Next Steps -->
 <section id="sec-next">
   <div class="container">
-    <div class="section-label fade-up">04 — Next Steps</div>
-    <h2 class="fade-up">次回に向けて</h2>
+    <div class="section-label fade-up">04 — On Your Own</div>
+    <h2 class="fade-up">自走に向けて</h2>
 
     <div class="card fade-up" style="border-left: 3px solid var(--accent);">
-      <h3><span class="icon"><svg><use href="#i-check"/></svg></span> やっておくこと</h3>
+      <h3><span class="icon"><svg><use href="#i-check"/></svg></span> 研修の後にやること</h3>
       <ul class="task-list">
         <li>数値日報チェックのGASスクリプトを完成させる（ルーム取得 → 判定 → リマインド送信）</li>
         <li>営業日報チェックも同じ構造で作成する</li>
@@ -820,17 +820,18 @@
     </div>
 
     <div class="card fade-up" style="margin-top: 16px;">
-      <h3><span class="icon"><svg><use href="#i-target"/></svg></span> 研修全体のロードマップ</h3>
-      <div class="flow" style="margin-top:16px">
-        <div class="flow-node">Day 1<small>セットアップ</small></div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-node">Day 2<small>GAS基盤構築</small></div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-node highlight">Day 3<small>レシピ設計</small></div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-node">Day 4〜<small>自走</small></div>
-      </div>
-      <div class="insight"><p><strong>ゴールは「次に何を自動化するか、自分で判断して実行できる」状態です。</strong>レシピ表があれば、講師がいなくても道具の選び方が分かります。困った時はClaudeに相談してください。</p></div>
+      <h3><span class="icon"><svg><use href="#i-target"/></svg></span> 困った時のガイド</h3>
+      <table class="data-table">
+        <thead><tr><th>困ったこと</th><th>やること</th></tr></thead>
+        <tbody>
+          <tr><td>やり方が分からない</td><td>Claudeに「これがしたい」と日本語で伝える</td></tr>
+          <tr><td>エラーが出た</td><td>エラー文をそのままClaudeに貼る</td></tr>
+          <tr><td>GASが動かなくなった</td><td>Chatに「このコードが動かない」と相談する</td></tr>
+          <tr><td>どの道具を使えばいいか迷う</td><td>このテキストのSection 2の早見表を見る</td></tr>
+          <tr><td>全体の進め方が分からなくなった</td><td>ロードマップのPhaseを確認する</td></tr>
+        </tbody>
+      </table>
+      <div class="insight"><p><strong>Claudeは24時間いつでも相談に乗ります。</strong>この研修テキストも、Claudeに「Day 3のテキスト見て」と渡せば、内容を踏まえてアドバイスしてくれます。</p></div>
     </div>
   </div>
 </section>
