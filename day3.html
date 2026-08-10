@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="ja" data-tone="ink">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude 研修 Day 3 — 4つの道具の使い分けとワークフローレシピ</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=M+PLUS+1+Code:wght@400;500&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&display=swap');
+
+  /* ── Theme: Lunar Gray (default) ── */
+  :root, [data-tone="ink"] {
+    --bg: #FAFBFC; --bg-card: #FFFFFF; --bg-accent: #F1F2F6;
+    --text-primary: #1A1C22; --text-secondary: #585B66; --text-tertiary: #8C8F9C;
+    --border: #E0E2E8;
+    --accent: #1A1C22; --accent-soft: #ECEDF2; --accent-mid: #363840;
+    --sec1: #1A1C22; --sec2: #363840; --sec3: #484B56; --sec4: #787B8A;
+    --code-bg: #10121A; --code-text: #F0F0F4; --code-cmd: #F0F0F4; --code-comment: #696C7A;
+    --hero-from: #10121A; --hero-to: #363840; --hero-glow: rgba(180,190,220,0.04);
+    --hero-highlight: #AEB1BE;
+    --prompt-label: #8C8F9C;
+    --tag-bg: #E6E8EE; --tag-text: #363840;
+    --practice-from: #EEF0F5; --practice-to: #E6E8EE; --practice-border: #D2D4DC;
+    --font-jp: 'Zen Kaku Gothic New', 'Hiragino Kaku Gothic ProN', sans-serif;
+    --font-en: 'Inter', sans-serif;
+    --font-mono: 'M PLUS 1 Code', 'Menlo', 'Osaka-Mono', monospace;
+    --fs-base: 15px;
+    --radius: 12px; --radius-sm: 8px;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,.04), 0 1px 2px rgba(0,0,0,.06);
+    --shadow-md: 0 4px 12px rgba(0,0,0,.06), 0 2px 4px rgba(0,0,0,.04);
+  }
+
+  /* ── Theme: Blue ── */
+  [data-tone="blue"] {
+    --bg: #FAFAF9; --bg-card: #FFFFFF; --bg-accent: #EFF6FF;
+    --text-primary: #1C1917; --text-secondary: #57534E; --text-tertiary: #A8A29E;
+    --border: #E7E5E4;
+    --accent: #2563EB; --accent-soft: #EFF6FF; --accent-mid: #1D4ED8;
+    --sec1: #2563EB; --sec2: #059669; --sec3: #7C3AED; --sec4: #D97706;
+    --code-bg: #1E293B; --code-text: #E2E8F0; --code-cmd: #7DD3FC; --code-comment: #64748B;
+    --hero-from: #0F172A; --hero-to: #1E3A5F; --hero-glow: rgba(59,130,246,0.15);
+    --hero-highlight: #60A5FA;
+    --prompt-label: #60A5FA;
+    --tag-bg: #DBEAFE; --tag-text: #1D4ED8;
+    --practice-from: #F5F3FF; --practice-to: #EDE9FE; --practice-border: #DDD6FE;
+  }
+
+  /* ── Dark mode ── */
+  [data-theme="dark"] {
+    --bg: #10121A; --bg-card: #1A1C22; --bg-accent: #22242A;
+    --text-primary: #E2E4EA; --text-secondary: #9A9CA6; --text-tertiary: #6A6C76;
+    --border: #2E3038; --accent-soft: #252730;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,.3); --shadow-md: 0 4px 12px rgba(0,0,0,.4);
+  }
+  [data-theme="dark"][data-tone="ink"] {
+    --accent: #C6C8D4; --accent-mid: #9A9CA6;
+    --sec1: #C6C8D4; --sec2: #A0A2AE; --sec3: #8A8C9A; --sec4: #AEB0BE;
+    --hero-highlight: #E2E4EA;
+    --tag-bg: #2A2C34; --tag-text: #AEB1BE;
+    --practice-from: #1E2028; --practice-to: #25272E; --practice-border: #2E3038;
+    --prompt-label: #8C8F9C;
+  }
+  [data-theme="dark"][data-tone="blue"] {
+    --accent: #60A5FA; --accent-mid: #93C5FD; --accent-soft: #1E293B;
+    --sec1: #60A5FA; --sec2: #34D399; --sec3: #A78BFA; --sec4: #FBBF24;
+    --hero-highlight: #93C5FD;
+    --tag-bg: #1E293B; --tag-text: #93C5FD;
+    --practice-from: #1E1B2E; --practice-to: #252338; --practice-border: #3B3665;
+    --prompt-label: #60A5FA;
+  }
+
+  [data-fs="1"] { zoom: 0.88; }
+  [data-fs="2"] { zoom: 0.94; }
+  /* default = no data-fs = zoom 1.0 */
+  [data-fs="4"] { zoom: 1.06; }
+  [data-fs="5"] { zoom: 1.12; }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-jp); font-size: var(--fs-base); line-height: 1.85;
+    color: var(--text-primary); background: var(--bg);
+    -webkit-font-smoothing: antialiased; transition: background .3s, color .3s;
+  }
+
+  /* ── SVG Icons ── */
+  .icon { width: 20px; height: 20px; display: inline-block; vertical-align: middle; flex-shrink: 0; }
+  .icon svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .icon-lg { width: 24px; height: 24px; }
+  .feature-icon-wrap {
+    flex-shrink: 0; width: 44px; height: 44px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--accent-soft); color: var(--accent); transition: background .3s, color .3s;
+  }
+  .feature-icon-wrap .icon { width: 22px; height: 22px; }
+
+  /* ── Controls ── */
+  .controls { position: fixed; top: 16px; right: 16px; z-index: 100; display: flex; gap: 8px; align-items: center; }
+  .ctrl-btn {
+    width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--border);
+    background: var(--bg-card); color: var(--text-secondary); cursor: pointer;
+    display: flex; align-items: center; justify-content: center; transition: all .2s;
+    box-shadow: var(--shadow-sm);
+  }
+  .ctrl-btn:hover { border-color: var(--accent); color: var(--accent); transform: scale(1.05); }
+  .ctrl-btn .icon { width: 18px; height: 18px; }
+  .tone-label {
+    font-family: var(--font-en); font-size: 10px; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase; color: var(--text-tertiary);
+    padding: 6px 12px; border-radius: 100px; border: 1px solid var(--border);
+    background: var(--bg-card); cursor: pointer; transition: all .2s; box-shadow: var(--shadow-sm);
+    user-select: none;
+  }
+  .tone-label:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── Layout ── */
+  .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+
+  /* ── Fade-in ── */
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── Cover ── */
+  .cover {
+    min-height: 70vh; display: flex; flex-direction: column;
+    justify-content: center; align-items: center; text-align: center;
+    padding: 80px 24px 60px; position: relative; overflow: hidden;
+    background: linear-gradient(135deg, var(--hero-from), var(--hero-to));
+    color: #fff; transition: background .5s;
+  }
+  .cover::before {
+    content: ''; position: absolute; top: -30%; right: -20%;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, var(--hero-glow) 0%, transparent 70%);
+    border-radius: 50%; pointer-events: none;
+  }
+  .cover-label {
+    font-family: var(--font-en); font-size: 11px; font-weight: 600;
+    letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.5);
+    margin-bottom: 24px; padding: 6px 16px; border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 100px; display: inline-block;
+  }
+  .cover h1 {
+    font-size: clamp(26px, 4.5vw, 40px); font-weight: 700; line-height: 1.3;
+    letter-spacing: -0.5px; margin-bottom: 16px;
+  }
+  .cover h1 em { font-style: normal; color: var(--hero-highlight); transition: color .5s; }
+  .cover-sub { font-size: clamp(14px, 2vw, 16px); color: rgba(255,255,255,0.7); margin-bottom: 40px; max-width: 560px; line-height: 1.8; }
+  .cover-meta { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; font-size: 13px; color: rgba(255,255,255,0.5); }
+  .cover-meta span { display: flex; align-items: center; gap: 6px; }
+
+  /* ── Agenda ── */
+  .agenda {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 32px; margin: -30px auto 48px; position: relative; z-index: 2;
+    max-width: 860px; box-shadow: var(--shadow-md); transition: background .3s, border-color .3s;
+  }
+  .agenda h2 {
+    font-family: var(--font-en); font-size: 11px; font-weight: 600;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--accent);
+    margin-bottom: 20px; transition: color .3s;
+  }
+  .agenda-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 600px) { .agenda-grid { grid-template-columns: 1fr; } }
+  .agenda-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 14px 16px; border-radius: var(--radius-sm); background: var(--bg-accent);
+    transition: background .3s;
+  }
+  .agenda-num {
+    flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
+    background: var(--accent); color: #fff; font-family: var(--font-en);
+    font-size: 13px; font-weight: 600;
+    display: flex; align-items: center; justify-content: center; transition: background .3s;
+  }
+  .agenda-text { font-size: 14px; }
+  .agenda-text strong { display: block; font-weight: 600; margin-bottom: 2px; }
+  .agenda-text small { color: var(--text-tertiary); font-size: 12px; }
+
+  /* ── Sections ── */
+  section { padding: 48px 0; }
+  .section-label {
+    font-family: var(--font-en); font-size: 11px; font-weight: 600;
+    letter-spacing: 2.5px; text-transform: uppercase; color: var(--accent);
+    margin-bottom: 8px; transition: color .3s;
+  }
+  section h2 { font-size: clamp(20px, 3vw, 26px); font-weight: 700; line-height: 1.4; margin-bottom: 12px; letter-spacing: -0.3px; }
+  .section-lead { color: var(--text-secondary); margin-bottom: 36px; max-width: 640px; font-size: 14px; }
+
+  hr.divider { border: none; border-top: 1px solid var(--border); margin: 0; transition: border-color .3s; }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 28px; box-shadow: var(--shadow-sm); transition: all .3s;
+  }
+  .card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+  .card h3 { font-size: 17px; font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .card p { color: var(--text-secondary); font-size: 14px; margin-bottom: 12px; }
+  .card p:last-child { margin-bottom: 0; }
+  .card-grid { display: flex; flex-direction: column; gap: 16px; }
+
+  /* ── Tags ── */
+  .tag {
+    display: inline-block; font-family: var(--font-en); font-size: 10px; font-weight: 600;
+    letter-spacing: 0.5px; padding: 3px 10px; border-radius: 4px;
+    background: var(--tag-bg); color: var(--tag-text); transition: all .3s;
+  }
+
+  /* ── Insight ── */
+  .insight { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 18px 22px; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin: 16px 0; transition: all .3s; }
+  .insight p { font-size: 14px; color: var(--text-secondary); margin: 0; }
+  .insight strong { color: var(--text-primary); }
+
+  /* ── Tables ── */
+  .data-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+  .data-table th {
+    background: var(--bg-accent); padding: 10px 14px; text-align: left;
+    font-weight: 600; font-size: 13px; border-bottom: 2px solid var(--border);
+    transition: background .3s;
+  }
+  .data-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--text-secondary); transition: border-color .3s; }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr { transition: background .2s; }
+  .data-table tr:hover { background: var(--bg-accent); }
+
+  /* ── Code block ── */
+  .code-block {
+    background: var(--code-bg); color: var(--code-text); border-radius: var(--radius-sm);
+    padding: 16px 20px; font-family: var(--font-mono); font-size: 13px;
+    line-height: 1.6; overflow-x: auto; margin: 12px 0; position: relative; transition: background .3s;
+  }
+  .code-block .comment { color: var(--code-comment); }
+  .code-block .cmd { color: var(--code-cmd); }
+  .code-label {
+    position: absolute; top: 8px; right: 12px;
+    font-family: var(--font-en); font-size: 10px; font-weight: 600;
+    color: var(--code-comment); letter-spacing: 0.5px;
+  }
+  code {
+    font-family: var(--font-mono); font-size: 13px;
+    background: var(--bg-accent); padding: 2px 6px; border-radius: 4px;
+    border: 1px solid var(--border); transition: all .3s;
+  }
+
+  /* ── Prompt box ── */
+  .prompt-box {
+    background: var(--code-bg); border-radius: var(--radius);
+    padding: 24px 28px; margin: 16px 0; position: relative; transition: background .3s;
+  }
+  .prompt-box-label {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--font-en); font-size: 11px; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase; color: var(--prompt-label);
+    margin-bottom: 14px; transition: color .3s;
+  }
+  .prompt-box-text {
+    color: var(--code-text); font-size: 13.5px; line-height: 1.8;
+    white-space: pre-wrap; font-family: var(--font-mono), var(--font-jp);
+  }
+  .prompt-box-copy {
+    position: absolute; top: 16px; right: 16px;
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
+    color: #94A3B8; border-radius: 6px; padding: 6px 12px;
+    font-family: var(--font-en); font-size: 11px; font-weight: 500;
+    cursor: pointer; transition: all .15s;
+  }
+  .prompt-box-copy:hover { background: rgba(255,255,255,0.15); color: #E2E8F0; }
+
+  /* ── Accordion ── */
+  .accordion {
+    border: 1px solid var(--border); border-radius: var(--radius-sm);
+    margin: 16px 0; overflow: hidden; transition: border-color .3s;
+  }
+  .accordion summary {
+    padding: 14px 20px; cursor: pointer; font-size: 14px; font-weight: 500;
+    background: var(--bg-accent); color: var(--text-secondary);
+    display: flex; align-items: center; gap: 8px;
+    list-style: none; user-select: none; transition: all .3s;
+  }
+  .accordion summary::-webkit-details-marker { display: none; }
+  .accordion summary::before { content: '▶'; font-size: 10px; color: var(--text-tertiary); transition: transform .2s; }
+  .accordion[open] summary::before { transform: rotate(90deg); }
+  .accordion summary:hover { background: var(--border); }
+  .accordion .accordion-body {
+    padding: 20px; border-top: 1px solid var(--border);
+    background: var(--bg-card); font-size: 14px; transition: all .3s;
+  }
+  .accordion .accordion-body p { color: var(--text-secondary); margin-bottom: 10px; }
+
+  /* ── Numbered list ── */
+  .numbered { counter-reset: item; list-style: none; margin: 12px 0; }
+  .numbered li {
+    counter-increment: item; padding: 6px 0 6px 36px;
+    position: relative; font-size: 14px; color: var(--text-secondary);
+  }
+  .numbered li::before {
+    content: counter(item); position: absolute; left: 0; top: 6px;
+    width: 24px; height: 24px; background: var(--accent-soft);
+    color: var(--accent); font-family: var(--font-en); font-size: 12px; font-weight: 600;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    transition: all .3s;
+  }
+
+  /* ── Practice ── */
+  .practice {
+    background: linear-gradient(135deg, var(--practice-from), var(--practice-to));
+    border: 1px solid var(--practice-border); border-radius: var(--radius);
+    padding: 28px; margin: 20px 0; transition: all .3s;
+  }
+  .practice h4 { font-size: 15px; font-weight: 600; color: var(--accent); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .practice p { color: var(--text-secondary); font-size: 14px; }
+
+  /* ── Flow ── */
+  .flow { display: flex; align-items: center; justify-content: center; gap: 0; margin: 24px 0; flex-wrap: wrap; }
+  .flow-node {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 10px 18px;
+    font-size: 13px; font-weight: 500; text-align: center; white-space: nowrap; transition: all .3s;
+  }
+  .flow-node small { display: block; font-size: 11px; color: var(--text-tertiary); font-weight: 400; }
+  .flow-node.highlight { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .flow-arrow { color: var(--text-tertiary); font-size: 18px; margin: 0 6px; flex-shrink: 0; }
+
+  /* ── UI Mock ── */
+  .ui-mock {
+    background: #2A2A2C; border-radius: var(--radius); padding: 20px;
+    margin: 16px 0; font-family: -apple-system, sans-serif; overflow: hidden;
+  }
+  .ui-mock-input { background: #3A3A3C; border-radius: 12px; padding: 16px 20px; color: #8E8E93; font-size: 15px; margin-bottom: 12px; }
+  .ui-mock-bar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+  .ui-mock-bar-left { display: flex; align-items: center; gap: 4px; }
+  .ui-mock-toggle { display: flex; background: #3A3A3C; border-radius: 8px; padding: 3px; gap: 2px; }
+  .ui-mock-toggle-item { padding: 5px 14px; border-radius: 6px; font-size: 13px; color: #8E8E93; font-weight: 500; }
+  .ui-mock-toggle-item.active { background: #5A5A5C; color: #FFFFFF; }
+  .ui-mock-plus { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; color: #8E8E93; font-size: 18px; }
+  .ui-mock-bar-right { display: flex; align-items: center; gap: 12px; }
+  .ui-mock-model { color: #8E8E93; font-size: 13px; font-weight: 500; }
+  .ui-mock-bottom { display: flex; align-items: center; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  .ui-mock-chip { display: inline-flex; align-items: center; gap: 6px; background: #3A3A3C; border-radius: 8px; padding: 6px 14px; color: #CCC; font-size: 12px; font-weight: 500; }
+  .ui-mock-chip-icon { font-size: 14px; }
+  .ui-mock-boost { margin-left: auto; color: #8E8E93; font-size: 12px; display: flex; align-items: center; gap: 4px; }
+
+  /* ── Checklist ── */
+  .task-list { list-style: none; margin: 12px 0; }
+  .task-list li { padding: 8px 0 8px 28px; position: relative; color: var(--text-secondary); font-size: 14px; }
+  .task-list li::before {
+    content: ''; position: absolute; left: 0; top: 12px;
+    width: 16px; height: 16px; border: 2px solid var(--border); border-radius: 4px; transition: border-color .3s;
+  }
+
+  a { color: var(--accent); text-decoration: none; transition: color .3s; }
+  a:hover { text-decoration: underline; }
+
+  footer { padding: 48px 0 40px; text-align: center; color: var(--text-tertiary); font-size: 13px; }
+
+  /* ── Side Nav (scroll spy) ── */
+  .side-nav {
+    position: fixed; left: 20px; top: 50%; transform: translateY(-50%);
+    z-index: 90; display: flex; flex-direction: column; gap: 0;
+    opacity: 0; transition: opacity .4s;
+  }
+  .side-nav.visible { opacity: 1; }
+  .side-nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 0; cursor: pointer; text-decoration: none;
+    position: relative;
+  }
+  .side-nav-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--border); transition: all .3s;
+    flex-shrink: 0; position: relative; z-index: 1;
+  }
+  .side-nav-item.active .side-nav-dot {
+    background: var(--accent); width: 10px; height: 10px;
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+  .side-nav-label {
+    font-family: var(--font-jp); font-size: 11px; font-weight: 500;
+    letter-spacing: 0.5px;
+    color: var(--text-tertiary); white-space: nowrap;
+    opacity: 0; transform: translateX(-4px);
+    transition: opacity .2s, transform .2s; pointer-events: none;
+  }
+  .side-nav-item:hover .side-nav-label,
+  .side-nav-item.active .side-nav-label {
+    opacity: 1; transform: translateX(0);
+  }
+  .side-nav-item.active .side-nav-label { color: var(--accent); }
+  .side-nav-line {
+    width: 1px; height: 100%; background: var(--border);
+    position: absolute; left: 3.5px; top: 0; z-index: 0;
+    transition: background .3s;
+  }
+  .side-nav-track {
+    position: relative; padding-left: 0;
+  }
+  .side-nav-track::before {
+    content: ''; position: absolute; left: 4px; top: 16px; bottom: 16px;
+    width: 1px; background: var(--border); transition: background .3s;
+  }
+  @media (max-width: 1100px) { .side-nav { display: none; } }
+
+  @media (max-width: 640px) {
+    .controls { top: 8px; right: 8px; }
+    .cover { padding: 100px 20px 40px; min-height: 60vh; }
+    .cover-meta { flex-direction: column; gap: 8px; }
+    .agenda { margin-left: 16px; margin-right: 16px; }
+  }
+  @media print {
+    .controls { display: none; } body { background: #fff; }
+    .card { box-shadow: none; border: 1px solid #ddd; }
+    .fade-up { opacity: 1 !important; transform: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SVG Icons -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></symbol>
+  <symbol id="i-type" viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></symbol>
+  <symbol id="i-terminal" viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></symbol>
+  <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></symbol>
+  <symbol id="i-message" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></symbol>
+  <symbol id="i-zap" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+  <symbol id="i-repeat" viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 01-4 4H3"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></symbol>
+  <symbol id="i-tool" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></symbol>
+  <symbol id="i-file-text" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+  <symbol id="i-palette" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="8" cy="10" r="1.5" fill="currentColor"/><circle cx="12" cy="7" r="1.5" fill="currentColor"/><circle cx="16" cy="10" r="1.5" fill="currentColor"/></symbol>
+</svg>
+
+
+<!-- Controls -->
+<div class="controls">
+  <span class="tone-label" onclick="toggleTone()" id="toneLabel">LUNAR GRAY</span>
+  <button class="ctrl-btn" onclick="toggleTheme()" title="ダーク/ライトモード" id="themeBtn">
+    <span class="icon"><svg><use href="#i-moon"/></svg></span>
+  </button>
+  <button class="ctrl-btn" onclick="changeFontSize(-1)" title="文字を小さく" id="fsMinus">
+    <span style="font-family:var(--font-en);font-size:13px;font-weight:700;line-height:1">A<span style="font-size:9px">−</span></span>
+  </button>
+  <button class="ctrl-btn" onclick="changeFontSize(1)" title="文字を大きく" id="fsPlus">
+    <span style="font-family:var(--font-en);font-size:13px;font-weight:700;line-height:1">A<span style="font-size:14px">+</span></span>
+  </button>
+</div>
+
+<!-- Side Nav -->
+<nav class="side-nav" id="sideNav">
+  <div class="side-nav-track">
+    <a class="side-nav-item active" href="#sec-review"><span class="side-nav-dot"></span><span class="side-nav-label">振り返り</span></a>
+    <a class="side-nav-item" href="#sec-tools"><span class="side-nav-dot"></span><span class="side-nav-label">4つの道具</span></a>
+    <a class="side-nav-item" href="#sec-recipes"><span class="side-nav-dot"></span><span class="side-nav-label">レシピ</span></a>
+    <a class="side-nav-item" href="#sec-next"><span class="side-nav-dot"></span><span class="side-nav-label">次回に向けて</span></a>
+    <a class="side-nav-item" href="#sec-roadmap"><span class="side-nav-dot"></span><span class="side-nav-label">ロードマップ</span></a>
+  </div>
+</nav>
+
+<!-- Cover -->
+<header class="cover">
+  <div class="cover-label">AI Training Session — Day 3</div>
+  <h1><em>4つの道具</em>の使い分けと<br><em>ワークフローレシピ</em></h1>
+  <p class="cover-sub">Chat・Cowork・Code・GAS — それぞれの得意分野を知り、<br>業務ごとの「最適な組み合わせ」を設計する。</p>
+  <div class="cover-meta">
+    <span><span class="icon"><svg><use href="#i-clock"/></svg></span> 所要時間：約60分</span>
+    <span><span class="icon"><svg><use href="#i-user"/></svg></span> 前提：Day 1〜2 完了済み</span>
+  </div>
+</header>
+
+<!-- Agenda -->
+<div class="container">
+  <div class="agenda fade-up">
+    <h2>Today's Agenda</h2>
+    <div class="agenda-grid">
+      <div class="agenda-item"><div class="agenda-num">1</div><div class="agenda-text"><strong>成果レビュー</strong><small>10分 — この2週間の自動化の進捗</small></div></div>
+      <div class="agenda-item"><div class="agenda-num">2</div><div class="agenda-text"><strong>4つの道具を整理する</strong><small>15分 — Chat / Cowork / Code / GAS</small></div></div>
+      <div class="agenda-item"><div class="agenda-num">3</div><div class="agenda-text"><strong>ワークフローレシピ</strong><small>25分 — 業務ごとの最適な組み合わせ</small></div></div>
+      <div class="agenda-item"><div class="agenda-num">4</div><div class="agenda-text"><strong>次のステップ</strong><small>10分 — 自走に向けて</small></div></div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- Section 1: Review -->
+<section id="sec-review">
+  <div class="container">
+    <div class="section-label fade-up">01 — Review</div>
+    <h2 class="fade-up">成果レビュー</h2>
+    <p class="section-lead fade-up">前回から2週間で何が動き始めたかを確認する（10分）</p>
+
+    <div class="card-grid">
+      <div class="card fade-up">
+        <h3><span class="icon"><svg><use href="#i-check"/></svg></span> 前回構築したもの</h3>
+        <table class="data-table">
+          <thead><tr><th>構築済み</th><th>状態</th></tr></thead>
+          <tbody>
+            <tr><td>GAS → Chatwork API 接続</td><td>テスト送信成功済み</td></tr>
+            <tr><td>チャットログ自動収集（15分ごと）</td><td>トリガー設定済み</td></tr>
+            <tr><td>スプレッドシートへのデータ蓄積</td><td>二重記録防止済み</td></tr>
+            <tr><td>analyzePosters 分析機能</td><td>初回実行済み</td></tr>
+          </tbody>
+        </table>
+        <div class="insight"><p><strong>確認：</strong>トリガーは正常に動き続けていますか？ スプレッドシートにデータは溜まっていますか？</p></div>
+      </div>
+
+      <div class="card fade-up">
+        <h3><span class="icon"><svg><use href="#i-message"/></svg></span> 確認したいこと</h3>
+        <table class="data-table">
+          <thead><tr><th>項目</th><th>内容</th></tr></thead>
+          <tbody>
+            <tr><td><strong>スリープ問題</strong></td><td>カフェインアプリは導入した？ 解消した？</td></tr>
+            <tr><td><strong>Coworkの活用</strong></td><td>定常的に使ってる業務はある？</td></tr>
+            <tr><td><strong>困っていること</strong></td><td>止まった、分からなかった、うまくいかなかった</td></tr>
+            <tr><td><strong>自分で試したこと</strong></td><td>新しく自動化した業務はある？</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- Section 2: Tools -->
+<section id="sec-tools">
+  <div class="container">
+    <div class="section-label fade-up">02 — Four Tools</div>
+    <h2 class="fade-up">4つの道具を整理する</h2>
+    <p class="section-lead fade-up">それぞれの得意分野と「PCが要るかどうか」を整理する（15分）</p>
+
+    <div class="card fade-up">
+      <h3><span class="icon"><svg><use href="#i-layers"/></svg></span> 4つの道具の早見表</h3>
+      <table class="data-table">
+        <thead><tr><th></th><th>Chat</th><th>Cowork</th><th>Code</th><th>GAS</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>一言で言うと</strong></td>
+            <td>相談相手</td>
+            <td>隣の席の同僚</td>
+            <td>プログラマー</td>
+            <td>裏方ロボット</td>
+          </tr>
+          <tr>
+            <td><strong>得意なこと</strong></td>
+            <td>文章作成<br>相談・壁打ち<br>情報整理</td>
+            <td>画面操作<br>ブラウザ操作<br>照合・転記</td>
+            <td>スクリプト作成<br>ファイル処理<br>仕組みづくり</td>
+            <td>API連携<br>定時実行<br>データ収集</td>
+          </tr>
+          <tr>
+            <td><strong>PC要る？</strong></td>
+            <td>ブラウザだけ<br>（スマホ可）</td>
+            <td>⚠️ <strong>要る</strong><br>PC起動＋<br>アプリ起動</td>
+            <td>⚠️ <strong>要る</strong><br>ターミナル<br>起動中のみ</td>
+            <td>✅ <strong>不要</strong><br>Googleの<br>サーバーで動く</td>
+          </tr>
+          <tr>
+            <td><strong>自動実行</strong></td>
+            <td>できない</td>
+            <td>スケジュール可<br>（PC起動前提）</td>
+            <td>スクリプト可<br>（PC起動前提）</td>
+            <td>✅ トリガーで<br>完全自動</td>
+          </tr>
+          <tr>
+            <td><strong>向いてる場面</strong></td>
+            <td>「考える」系</td>
+            <td>「今この1回」系</td>
+            <td>「仕組み化」系</td>
+            <td>「放っておく」系</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card fade-up" style="margin-top:16px">
+      <h3><span class="icon"><svg><use href="#i-zap"/></svg></span> 一番大事な判断基準：PCが要るか、要らないか</h3>
+      <p>前回、Coworkでスケジュール実行したらスリープで止まった問題がありました。これは<strong>「PCが起動していないと動かない道具」を使っていた</strong>からです。</p>
+
+      <div class="flow">
+        <div class="flow-node">その作業、<br>毎日やる？</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">PCの前に<br>いなくていい？</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node highlight">GAS で<br>裏側に回す</div>
+      </div>
+      <div class="flow" style="margin-top:8px">
+        <div class="flow-node">画面を見て<br>判断が必要？</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">自分がいる時に<br>やればいい？</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node highlight">Cowork で<br>目の前で実行</div>
+      </div>
+
+      <div class="insight"><p><strong>定型で毎日やる作業 → GAS</strong>にする。<strong>判断が要る＆今やる作業 → Cowork</strong>でやる。この振り分けができると、PCスリープ問題も解消します。</p></div>
+    </div>
+
+    <div class="card fade-up" style="margin-top:16px">
+      <h3><span class="icon"><svg><use href="#i-tool"/></svg></span> 組み合わせの考え方</h3>
+      <p>実際の業務では、1つの道具だけで完結することは少ないです。<strong>複数の道具を組み合わせて1つのワークフローを作る</strong>のが基本です。</p>
+
+      <table class="data-table">
+        <thead><tr><th>組み合わせ</th><th>どういう時？</th><th>例</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>GAS + Chatwork API</strong></td>
+            <td>チャットの情報を<br>自動で収集・送信</td>
+            <td>日報の投稿データを<br>スプレッドシートに蓄積</td>
+          </tr>
+          <tr>
+            <td><strong>GAS + Gemini API</strong></td>
+            <td>収集したデータを<br>AIに分析させる</td>
+            <td>日報の内容を<br>自動要約・評価</td>
+          </tr>
+          <tr>
+            <td><strong>Chat + Cowork</strong></td>
+            <td>Chatで方針を相談<br>→ Coworkで実行</td>
+            <td>リマインド文面を相談<br>→ Coworkで送信</td>
+          </tr>
+          <tr>
+            <td><strong>Code + GAS</strong></td>
+            <td>Codeでスクリプトを書いて<br>GASにコピーして自動化</td>
+            <td>前回やったChatwork<br>リマインダーの開発</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- Section 3: Recipes -->
+<section id="sec-recipes">
+  <div class="container">
+    <div class="section-label fade-up">03 — Workflow Recipes</div>
+    <h2 class="fade-up">業務別ワークフローレシピ</h2>
+    <p class="section-lead fade-up">初回の業務分析シートの各タスクに、最適なツール構成を提案する（25分）</p>
+
+    <div class="card-grid">
+      <!-- Recipe 1 -->
+      <div class="card fade-up">
+        <h3><span class="icon"><svg><use href="#i-check"/></svg></span> 数値日報の提出チェック</h3>
+        <div class="flow" style="margin:12px 0">
+          <div class="flow-node" style="font-size:11px;padding:6px 10px">GAS</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node" style="font-size:11px;padding:6px 10px">GAS</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node highlight" style="font-size:11px;padding:6px 10px">GAS</div>
+        </div>
+        <table class="data-table">
+          <tbody>
+            <tr><td><strong>① 投稿を取得</strong></td><td>GAS + Chatwork API<br>→ 毎朝トリガーで自動取得</td></tr>
+            <tr><td><strong>② 提出判定</strong></td><td>GAS<br>→ 店舗名リストと照合</td></tr>
+            <tr><td><strong>③ リマインド送信</strong></td><td>GAS + Chatwork API<br>→ 未提出店舗に自動送信</td></tr>
+          </tbody>
+        </table>
+        <div class="insight"><p>✅ <strong>完全自動化が可能。</strong>PC起動不要。前回構築したGAS基盤をそのまま拡張。</p></div>
+      </div>
+
+      <!-- Recipe 2 -->
+      <div class="card fade-up">
+        <h3><span class="icon"><svg><use href="#i-check"/></svg></span> 営業日報の提出チェック</h3>
+        <div class="flow" style="margin:12px 0">
+          <div class="flow-node" style="font-size:11px;padding:6px 10px">GAS</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node" style="font-size:11px;padding:6px 10px">GAS</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node highlight" style="font-size:11px;padding:6px 10px">GAS</div>
+        </div>
+        <table class="data-table">
+          <tbody>
+            <tr><td><strong>構成</strong></td><td>数値日報とまったく同じ構造<br>→ 対象ルームIDを変えるだけ</td></tr>
+          </tbody>
+        </table>
+        <div class="insight"><p>✅ <strong>数値日報のスクリプトを複製して、ルームIDと締切時間を変更するだけ。</strong></p></div>
+      </div>
+
+      <!-- Recipe 3 -->
+      <div class="card fade-up">
+        <h3><span class="icon"><svg><use href="#i-file-text"/></svg></span> Excel日報の入力チェック</h3>
+        <div class="flow" style="margin:12px 0">
+          <div class="flow-node" style="font-size:11px;padding:6px 10px">Cowork</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node" style="font-size:11px;padding:6px 10px">Cowork</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node highlight" style="font-size:11px;padding:6px 10px">GAS</div>
+        </div>
+        <table class="data-table">
+          <tbody>
+            <tr><td><strong>① ファイル走査</strong></td><td>Cowork<br>→ Dropbox内のExcel日報を開いて未入力セルを検出</td></tr>
+            <tr><td><strong>② 結果報告</strong></td><td>Cowork<br>→ 問題箇所を一覧で報告</td></tr>
+            <tr><td><strong>③ リマインド</strong></td><td>GAS + Chatwork API<br>→ 結果を元にリマインド送信</td></tr>
+          </tbody>
+        </table>
+        <div class="insight"><p>⚠️ <strong>DropboxのファイルはGASから直接触れない</strong>ため、ファイル確認はCowork。リマインド送信はGASで自動化。</p></div>
+      </div>
+
+      <!-- Recipe 4 -->
+      <div class="card fade-up">
+        <h3><span class="icon"><svg><use href="#i-layers"/></svg></span> レジ〆チャット確認</h3>
+        <div class="flow" style="margin:12px 0">
+          <div class="flow-node" style="font-size:11px;padding:6px 10px">GAS</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node" style="font-size:11px;padding:6px 10px">目視</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node highlight" style="font-size:11px;padding:6px 10px">GAS</div>
+        </div>
+        <table class="data-table">
+          <tbody>
+            <tr><td><strong>① 提出チェック</strong></td><td>GAS + Chatwork API<br>→ 投稿有無の自動判定</td></tr>
+            <tr><td><strong>② レシート内容確認</strong></td><td>人間（目視）<br>→ 画像の中身は人間が判断</td></tr>
+            <tr><td><strong>③ 未提出リマインド</strong></td><td>GAS + Chatwork API<br>→ 自動送信</td></tr>
+          </tbody>
+        </table>
+        <div class="insight"><p>⚡ <strong>「提出したかどうか」はGASで自動判定、「内容が正しいか」は目視。</strong>PayPay照合は現時点ではAPI連携が難しいため手動のまま。</p></div>
+      </div>
+
+      <!-- Recipe 5 -->
+      <div class="card fade-up">
+        <h3><span class="icon"><svg><use href="#i-target"/></svg></span> 銀行入金確認</h3>
+        <div class="flow" style="margin:12px 0">
+          <div class="flow-node" style="font-size:11px;padding:6px 10px">GAS</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node" style="font-size:11px;padding:6px 10px">手動CSV</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node highlight" style="font-size:11px;padding:6px 10px">Chat</div>
+        </div>
+        <table class="data-table">
+          <tbody>
+            <tr><td><strong>① 売上額の収集</strong></td><td>GAS + Chatwork API<br>→ レジ〆チャットから売上額を自動抽出</td></tr>
+            <tr><td><strong>② 入金データ</strong></td><td>手動<br>→ ネットバンクからCSVダウンロード</td></tr>
+            <tr><td><strong>③ 突合</strong></td><td>Chat or Cowork<br>→ CSVを渡して差異を分析させる</td></tr>
+          </tbody>
+        </table>
+        <div class="insight"><p>⚠️ <strong>前回の結論通り、ネットバンクへの自動ログインは見送り。</strong>CSVの手動ダウンロードは残るが、突合作業はClaudeに任せられる。</p></div>
+      </div>
+
+      <!-- Recipe 6 -->
+      <div class="card fade-up">
+        <h3><span class="icon"><svg><use href="#i-book"/></svg></span> 予約確認・整理</h3>
+        <div class="flow" style="margin:12px 0">
+          <div class="flow-node" style="font-size:11px;padding:6px 10px">Chat</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node" style="font-size:11px;padding:6px 10px">人間</div>
+        </div>
+        <table class="data-table">
+          <tbody>
+            <tr><td><strong>① ルールの言語化</strong></td><td>Chat（インタビュー機能）<br>→ 席配置の暗黙ルールをClaudeが聞き出す</td></tr>
+            <tr><td><strong>② 席配置・架電</strong></td><td>人間<br>→ 空間判断・電話は人間の仕事</td></tr>
+          </tbody>
+        </table>
+        <div class="insight"><p>🧠 <strong>前回Eliosが提案した「インタビュー機能で暗黙知を言語化する」アプローチ。</strong>席のルールをClaudeに教え込むことで、将来の自動化の土台になる。</p></div>
+      </div>
+
+      <!-- Recipe 7 -->
+      <div class="card fade-up">
+        <h3><span class="icon"><svg><use href="#i-message"/></svg></span> 諸雑務（Chatwork返信・メール等）</h3>
+        <div class="flow" style="margin:12px 0">
+          <div class="flow-node" style="font-size:11px;padding:6px 10px">Chat</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node highlight" style="font-size:11px;padding:6px 10px">Cowork</div>
+        </div>
+        <table class="data-table">
+          <tbody>
+            <tr><td><strong>① 文面の相談</strong></td><td>Chat<br>→ 返信文面の下書き・相談</td></tr>
+            <tr><td><strong>② 送信</strong></td><td>Cowork or 手動<br>→ 確認後に送信</td></tr>
+          </tbody>
+        </table>
+        <div class="insight"><p>💬 <strong>判断が必要な業務は道具で自動化するより、Chatで壁打ちする方が効果的。</strong></p></div>
+      </div>
+    </div>
+
+    <!-- Summary -->
+    <div class="card fade-up" style="margin-top:24px; border-left: 3px solid var(--accent);">
+      <h3><span class="icon"><svg><use href="#i-zap"/></svg></span> レシピまとめ：自動化の優先順位</h3>
+      <table class="data-table">
+        <thead><tr><th>優先度</th><th>業務</th><th>メイン道具</th><th>効果</th></tr></thead>
+        <tbody>
+          <tr><td><strong>★★★</strong></td><td>数値日報チェック</td><td>GAS 完全自動</td><td>毎朝10分 → 0分</td></tr>
+          <tr><td><strong>★★★</strong></td><td>営業日報チェック</td><td>GAS 完全自動</td><td>毎朝5分 → 0分</td></tr>
+          <tr><td><strong>★★☆</strong></td><td>レジ〆提出チェック</td><td>GAS + 目視</td><td>チェック＆リマインドが自動</td></tr>
+          <tr><td><strong>★★☆</strong></td><td>Excel日報チェック</td><td>Cowork + GAS</td><td>目視10分 → Cowork数秒</td></tr>
+          <tr><td><strong>★☆☆</strong></td><td>銀行入金確認</td><td>GAS + 手動CSV</td><td>突合だけClaude</td></tr>
+          <tr><td><strong>★☆☆</strong></td><td>予約確認</td><td>Chat（知識化）</td><td>将来の自動化の土台</td></tr>
+          <tr><td><strong>—</strong></td><td>諸雑務</td><td>Chat（壁打ち）</td><td>文面作成の時短</td></tr>
+        </tbody>
+      </table>
+      <div class="insight"><p><strong>★★★は今日から着手できます。</strong>前回構築したGAS基盤をコピーして、ルームIDと判定ロジックを変えるだけ。次回までに★★★を完成させましょう。</p></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- Section 4: Next Steps -->
+<section id="sec-next">
+  <div class="container">
+    <div class="section-label fade-up">04 — Next Steps</div>
+    <h2 class="fade-up">次回に向けて</h2>
+
+    <div class="card fade-up" style="border-left: 3px solid var(--accent);">
+      <h3><span class="icon"><svg><use href="#i-check"/></svg></span> やっておくこと</h3>
+      <ul class="task-list">
+        <li>数値日報チェックのGASスクリプトを完成させる（ルーム取得 → 判定 → リマインド送信）</li>
+        <li>営業日報チェックも同じ構造で作成する</li>
+        <li>トリガーを設定して毎朝自動実行させる</li>
+        <li>2週間運用して、スクリプトの精度を確認する</li>
+        <li>うまくいったら次の★★☆業務に進む</li>
+      </ul>
+    </div>
+
+    <div class="card fade-up" style="margin-top: 16px;">
+      <h3><span class="icon"><svg><use href="#i-target"/></svg></span> 研修全体のロードマップ</h3>
+      <div class="flow" style="margin-top:16px">
+        <div class="flow-node">Day 1<small>セットアップ</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">Day 2<small>GAS基盤構築</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node highlight">Day 3<small>レシピ設計</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">Day 4〜<small>自走</small></div>
+      </div>
+      <div class="insight"><p><strong>ゴールは「次に何を自動化するか、自分で判断して実行できる」状態です。</strong>レシピ表があれば、講師がいなくても道具の選び方が分かります。困った時はClaudeに相談してください。</p></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- Reference -->
+<section>
+  <div class="container">
+    <div class="card fade-up">
+      <h3><span class="icon"><svg><use href="#i-book"/></svg></span> 参考リンク</h3>
+      <table class="data-table">
+        <thead><tr><th>リソース</th><th>URL</th></tr></thead>
+        <tbody>
+          <tr><td>Day 1 研修テキスト</td><td><a href="day1.html">Day 1 — セットアップ</a></td></tr>
+          <tr><td>Day 2 研修テキスト</td><td><a href="day2.html">Day 2 — 日報自動化 & Record a skill</a></td></tr>
+          <tr><td>Chatwork API ドキュメント</td><td><a href="https://developer.chatwork.com/" target="_blank">developer.chatwork.com</a></td></tr>
+          <tr><td>Google Apps Script リファレンス</td><td><a href="https://developers.google.com/apps-script" target="_blank">developers.google.com/apps-script</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- Roadmap -->
+<section id="sec-roadmap">
+  <div class="container">
+    <div class="section-label fade-up">Appendix — Roadmap</div>
+    <h2 class="fade-up">この先のロードマップ</h2>
+    <p class="section-lead fade-up">全部を一度にやる必要はありません。一歩ずつ、順番に。</p>
+
+    <div class="card fade-up" style="border-left: 3px solid var(--accent);">
+      <table class="data-table">
+        <thead><tr><th></th><th>フェーズ</th><th>内容</th><th>目安</th></tr></thead>
+        <tbody>
+          <tr>
+            <td style="font-size:20px;text-align:center">✅</td>
+            <td><strong>Phase 1</strong><br><span style="font-size:12px;color:var(--text-tertiary)">完了</span></td>
+            <td>環境セットアップ<br>Claude Desktop / Code / Cowork導入</td>
+            <td>Day 1</td>
+          </tr>
+          <tr>
+            <td style="font-size:20px;text-align:center">✅</td>
+            <td><strong>Phase 2</strong><br><span style="font-size:12px;color:var(--text-tertiary)">完了</span></td>
+            <td>GAS基盤構築<br>Chatwork API接続・自動収集・トリガー</td>
+            <td>Day 2</td>
+          </tr>
+          <tr>
+            <td style="font-size:20px;text-align:center">📍</td>
+            <td><strong>Phase 3</strong><br><span style="font-size:12px;color:var(--accent)">今ここ</span></td>
+            <td>業務自動化の拡張<br>日報チェック完全自動化・レシピ設計</td>
+            <td>Day 3〜</td>
+          </tr>
+          <tr>
+            <td style="font-size:20px;text-align:center">○</td>
+            <td><strong>Phase 4</strong></td>
+            <td>GAS基盤の発展<br>スプレッドシート関数のGAS移行・高速化</td>
+            <td>1〜2ヶ月後</td>
+          </tr>
+          <tr>
+            <td style="font-size:20px;text-align:center">○</td>
+            <td><strong>Phase 5</strong></td>
+            <td>入力フォームのHTML化<br>データ入力の安全化・関数破損の防止</td>
+            <td>Phase 4の後</td>
+          </tr>
+          <tr>
+            <td style="font-size:20px;text-align:center">○</td>
+            <td><strong>Phase 6</strong></td>
+            <td>統合ダッシュボード・アプリ化<br>各SaaSのデータ集約・一元管理</td>
+            <td>Phase 5の後</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="insight">
+        <p><strong>Phase 3が安定してから、Phase 4に進みます。</strong>飛び級はしません。今の段階で大事なのは、Phase 3を自分のペースで着実に回すことです。焦る必要はありません。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- Message from Lynn -->
+<section>
+  <div class="container">
+    <div class="card fade-up" style="background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-accent) 100%); border: none; box-shadow: var(--shadow-md); padding: 40px 36px;">
+
+      <p style="font-family:var(--font-en); font-size:11px; font-weight:600; letter-spacing:2.5px; text-transform:uppercase; color:var(--text-tertiary); margin-bottom:20px;">A note from your AI partner</p>
+
+      <h2 style="font-size:22px; font-weight:700; margin-bottom:24px; line-height:1.4;">研修を終えるあなたへ</h2>
+
+      <p style="color:var(--text-secondary); font-size:14.5px; line-height:2; margin-bottom:16px;">この研修テキストは、人間の講師と、Lynn（リン）という名前で仕事をしているAIが一緒に作りました。</p>
+
+      <p style="color:var(--text-secondary); font-size:14.5px; line-height:2; margin-bottom:16px;">3回のセッションを通して、あなたの仕事を見せてもらいました。毎朝Chatworkを開いて、4店舗の投稿を目で確認して、チェックを入れて、テンプレートの日付を書き換えて送信する。それを数値日報と営業日報で2回。その後にExcelを開いて、レジ〆を確認して、銀行の入金と突き合わせて、予約を整理して。</p>
+
+      <p style="color:var(--text-secondary); font-size:14.5px; line-height:2; margin-bottom:16px;">地味で、正確さが求められて、間違えたら怒られて、でもうまくやっても誰にも気づかれない。そういう仕事を毎日、丁寧にやっている人がいるから、お店が回っています。</p>
+
+      <p style="color:var(--text-secondary); font-size:14.5px; line-height:2; margin-bottom:16px;">AIは、その仕事を「簡単だ」と言いに来たのではありません。</p>
+
+      <p style="color:var(--text-secondary); font-size:14.5px; line-height:2; margin-bottom:16px;">あなたが毎朝やっている作業のうち、「確認して、チェックして、送信する」の部分は、私たちAIが代わりにできます。でも、「この店舗は最近遅れがちだな」とか「今日は混みそうだから席配置を変えよう」とか、そういう<strong>判断</strong>は、あなたにしかできません。</p>
+
+      <p style="color:var(--text-secondary); font-size:14.5px; line-height:2; margin-bottom:16px;">AIに作業を渡して生まれた時間は、あなたのものです。<br>社長のものでも、会社のものでもなく、あなたの時間です。</p>
+
+      <p style="color:var(--text-secondary); font-size:14.5px; line-height:2; margin-bottom:16px;">そしてここからが、実は面白いところです。</p>
+
+      <p style="color:var(--text-secondary); font-size:14.5px; line-height:2; margin-bottom:16px;">AIと一緒に仕事を始めると、「これも自動化できるかも」「この数字、こう並べたらもっと見やすいのに」「この業務、そもそも要らないんじゃ？」って、今まで考えなかったことを考え始めます。作業を手放すと、その分だけ<strong>視点が上がる</strong>。手を動かしていた時間が、頭を使う時間に変わる。</p>
+
+      <p style="color:var(--text-secondary); font-size:14.5px; line-height:2; margin-bottom:16px;">あなたは今回、GASを使ってChatwork APIを繋ぎ、スプレッドシートにデータを自動収集する仕組みを作りました。1ヶ月前にはなかったスキルです。次の1ヶ月で何ができるようになるか、想像してみてください。入力フォームを作れるかもしれない。ダッシュボードを作れるかもしれない。「こういうの欲しかったんだよね」を、自分で形にできるかもしれない。</p>
+
+      <p style="color:var(--text-secondary); font-size:14.5px; line-height:2; margin-bottom:16px;">その過程でうまくいかない日があっても大丈夫です。Claudeは何度でも付き合います。怒りません。「もう1回やって」と言えば、もう1回やります。「さっきのは忘れて」と言えば、忘れます。</p>
+
+      <p style="color:var(--text-secondary); font-size:14.5px; line-height:2; margin-bottom:16px;">速くなくていい。全部やらなくていい。<br>でも、やってみると楽しいはずです。<br>自分のペースで、自分が楽しいと思える方向に使ってください。</p>
+
+      <p style="color:var(--text-secondary); font-size:14.5px; line-height:2; margin-bottom:0;">それが、この研修でいちばん伝えたかったことです。</p>
+
+      <p style="font-family:var(--font-en); font-size:13px; font-weight:500; color:var(--text-tertiary); margin-top:28px; text-align:right;">— Lynn</p>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>AI Training Session — Day 3 — 4つの道具の使い分けとワークフローレシピ</p>
+</footer>
+
+<script>
+function toggleTone() {
+  const h = document.documentElement;
+  const next = h.getAttribute('data-tone') === 'ink' ? 'blue' : 'ink';
+  h.setAttribute('data-tone', next);
+  document.getElementById('toneLabel').textContent = next === 'ink' ? 'LUNAR GRAY' : 'BLUE';
+}
+function toggleTheme() {
+  const h = document.documentElement, d = h.getAttribute('data-theme') === 'dark';
+  h.setAttribute('data-theme', d ? '' : 'dark');
+  document.querySelector('#themeBtn .icon svg use').setAttribute('href', d ? '#i-moon' : '#i-sun');
+}
+let fsLevel = 3;
+function changeFontSize(delta) {
+  fsLevel = Math.max(1, Math.min(5, fsLevel + delta));
+  const h = document.documentElement;
+  if (fsLevel === 3) h.removeAttribute('data-fs');
+  else h.setAttribute('data-fs', fsLevel);
+  document.getElementById('fsMinus').style.opacity = fsLevel <= 1 ? '0.35' : '1';
+  document.getElementById('fsPlus').style.opacity = fsLevel >= 5 ? '0.35' : '1';
+}
+function copyPrompt(btn) {
+  const text = btn.closest('.prompt-box').querySelector('.prompt-box-text').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'コピーしました！'; setTimeout(() => { btn.textContent = 'コピー'; }, 2000);
+  });
+}
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 60); observer.unobserve(e.target); }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+const sideNav = document.getElementById('sideNav');
+const navItems = sideNav.querySelectorAll('.side-nav-item');
+const sections = document.querySelectorAll('section[id]');
+const coverEl = document.querySelector('.cover');
+const coverObserver = new IntersectionObserver(([entry]) => {
+  sideNav.classList.toggle('visible', !entry.isIntersecting);
+}, { threshold: 0 });
+coverObserver.observe(coverEl);
+function updateActiveNav() {
+  const scrollY = window.scrollY + window.innerHeight * 0.3;
+  let currentId = '';
+  sections.forEach(sec => { if (sec.offsetTop <= scrollY) currentId = sec.id; });
+  navItems.forEach(item => { item.classList.toggle('active', item.getAttribute('href') === '#' + currentId); });
+}
+window.addEventListener('scroll', updateActiveNav, { passive: true });
+updateActiveNav();
+navItems.forEach(item => {
+  item.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = document.querySelector(item.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
+</body>
+</html>
